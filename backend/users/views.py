@@ -14,7 +14,7 @@ from .permission import IsSelf
 from django.contrib.auth.models import User
 
 
-class UserViewSet(ModelViewSet):
+class UsersViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -22,9 +22,7 @@ class UserViewSet(ModelViewSet):
         permission_classes = []
         if self.action == "list":
             permission_classes = [IsAdminUser]
-        elif (self.action == "create"
-              or self.action == "retrieve"
-              or self.action == "favs"):
+        elif (self.action == "create"):
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsSelf]
