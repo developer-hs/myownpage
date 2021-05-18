@@ -38,6 +38,7 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
+    "users.apps.UsersConfig"
 ]
 
 THIRD_PARTY_APPS = ["rest_framework", 'corsheaders', 'django_extensions', ]
@@ -131,3 +132,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    # ↓ Authentication https://www.django-rest-framework.org/api-guide/authentication/#setting-the-authentication-scheme
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        "config.authentication.JWTAuthentication",
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
