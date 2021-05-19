@@ -1,2 +1,1 @@
-# myownpage
-브라우저 첫 페이지를 효율성있게 커스터마이징 할 수 있음
+backend with django rest framework
