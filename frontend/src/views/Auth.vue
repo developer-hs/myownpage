@@ -33,6 +33,7 @@
 </template>
 <script>
 import callApi from "../api/callApi";
+import store from "../store";
 export default {
   data() {
     return {
@@ -56,7 +57,9 @@ export default {
         password: this.password,
       })
         .then((response) => {
-          console.log(response.data);
+          if (response.status === 200) {
+            store.commit("auth/setToken", response.data.token);
+          }
         })
         .catch((error) => {
           console.log(error);
