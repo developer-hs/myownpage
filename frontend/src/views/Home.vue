@@ -28,6 +28,13 @@
         </tbody>
       </template>
     </v-simple-table>
+    <v-container fluid>
+      <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-select :items="items" label="Standard"></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 <script>
@@ -41,7 +48,7 @@ export default {
       { v: "J", t: "Jeju" },
       { v: "B", t: "Busan" },
     ],
-    region: "T",
+    region: "B",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     tableShow: true,
   }),
