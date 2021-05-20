@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderVue />
+    <!-- <HeaderVue /> -->
     <div id="content" class="content">
       <router-view></router-view>
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import HeaderVue from "./components/layout/Header.vue";
+// import HeaderVue from "./components/layout/Header.vue";
 
 export default {
   data: function() {
@@ -17,7 +17,7 @@ export default {
     };
   },
   components: {
-    HeaderVue,
+    // HeaderVue,
   },
 };
 </script>
