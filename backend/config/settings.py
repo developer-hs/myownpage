@@ -134,6 +134,7 @@ MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+APPEND_SLASH=False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -141,7 +142,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
        'http://127.0.0.1:8000',
-       'http://127.0.0.1:3000',
+       'http://127.0.0.1:8080',
 ]
 
 REST_FRAMEWORK = {
