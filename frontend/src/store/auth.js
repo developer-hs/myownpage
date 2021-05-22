@@ -1,11 +1,12 @@
 export default {
   namespaced: true,
   state: {
-    token: null,
+    token: localStorage.getItem("access_token"),
   },
   mutations: {
     setToken(state, token) {
       state.token = token;
+      localStorage.setItem("access_token", token);
     },
   },
   actions: {},

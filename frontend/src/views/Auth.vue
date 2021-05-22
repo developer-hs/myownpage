@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container>
+    <v-container v-if="!token">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="username"
@@ -16,7 +16,7 @@
           required
           v-model="password"
         ></v-text-field>
-        <v-btn color="success" class="login-button mr-4" @click="login">
+        <v-btn color="success" class="login-button mr-4" @click="logIn">
           logIn
         </v-btn>
 
@@ -29,11 +29,15 @@
         </v-btn>
       </v-form>
     </v-container>
+    <v-container v-if="token">
+      <v-btn @click="logOut">Logout</v-btn>
+    </v-container>
   </v-app>
 </template>
 <script>
 import callApi from "../api/callApi";
 import store from "../store";
+
 export default {
   data() {
     return {
@@ -48,10 +52,12 @@ export default {
         (v) => !!v || "Password is required",
         (v) => (v && v.length >= 3) || "Passwrod must ba less than 3 integer",
       ],
+      token: this.$store.state.auth.token,
     };
   },
+
   methods: {
-    login() {
+    logIn() {
       callApi("post", "/users/login/", {
         username: this.username,
         password: this.password,
@@ -69,6 +75,10 @@ export default {
           }
         });
     },
+    logOut() {
+      this.$store.state.auth.token = null;
+      localStorage.removeItem("access_token");
+    },
     validate() {
       this.$refs.form.validate();
     },
@@ -78,6 +88,9 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
+  },
+  updated() {
+    console.log(this.$store.state.auth.token);
   },
 };
 </script>
