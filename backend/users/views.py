@@ -11,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, AllowAny
 from .serializers import UserSerializer
 from .permission import IsSelf
-from django.contrib.auth.models import User
+from .models import User
 
 
 class UsersViewSet(ModelViewSet):

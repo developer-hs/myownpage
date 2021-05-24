@@ -38,7 +38,8 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
-    "users.apps.UsersConfig"
+    "users.apps.UsersConfig",
+    "sites.apps.SitesConfig"
 ]
 
 THIRD_PARTY_APPS = ["rest_framework", 'corsheaders', 'django_extensions', ]
@@ -132,6 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 
 MEDIA_URL = "/media/"
 
+AUTH_USER_MODEL = "users.User"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 APPEND_SLASH=False
