@@ -1,111 +1,47 @@
 <template>
-  <div>
-    <h1>Welcome to {{ title2 }}!</h1>
-    <input type="text" v-model="input1" />
-    <button type="button" @click="getData">Get</button>
-    <button type="button" @click="setData">Set</button>
-    <button type="button" @click="tableToggle">Toggle</button>
-    <select class="select-form" v-model="region" @change="changeRegion">
-      <option :key="i" :value="d.v" v-for="(d, i) in options">{{ d.t }}</option>
-    </select>
-    <v-simple-table v-show="tableShow">
-      <template v-slot:default>
-        <thead>
-          <tr :key="i" v-for="(d, i) in options">
-            <td class="text-left">
-              {{ d.t }}
-            </td>
-            <td class="text-left">
-              {{ d.v }}
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in desserts" :key="item.name">
-            <td>{{ item.name }}</td>
-            <td>{{ item.calories }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
-    <v-container fluid>
-      <v-row align="center">
-        <v-col class="d-flex" cols="12" sm="6">
-          <v-select :items="items" label="Standard"></v-select>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-app>
+    <v-form class="pt-5" id="search-form" @submit="onSearch">
+      <v-container>
+        <v-btn small fab text color="green">NAVER</v-btn>
+        <v-text-field v-model="searchTerm">
+          <template v-slot:label>
+            사이트 <strong>검색</strong>
+            <v-icon style="vertical-align: middle">
+              mdi-file-find
+            </v-icon>
+          </template>
+        </v-text-field>
+      </v-container>
+    </v-form>
+    <v-row>
+      <v-btn class="ml-9" @click="logOut">logout</v-btn>
+    </v-row>
+  </v-app>
 </template>
 <script>
+import { AccessToken } from "../variable";
 export default {
-  data: () => ({
-    title: "Vue js",
-    title2: "Seoul",
-    input1: "abcd",
-    options: [
-      { v: "S", t: "Seoul" },
-      { v: "J", t: "Jeju" },
-      { v: "B", t: "Busan" },
-    ],
-    region: "B",
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
-    tableShow: true,
-  }),
-  watch: {
-    input() {
-      console.log(this.input1);
-    },
+  data() {
+    return {
+      searchTerm: "",
+    };
   },
-
   methods: {
-    getData() {
-      alert(this.input1);
+    onSearch() {
+      window.open(
+        `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${this.searchTerm}`
+      );
     },
-    setData() {
-      this.input1 = "12345";
+    logOut() {
+      this.$store.state.auth.token = null;
+      localStorage.removeItem(AccessToken);
+      document.location.reload();
     },
-    changeRegion() {
-      alert(this.region);
-    },
-    tableToggle() {
-      this.tableShow = !this.tableShow;
-    },
-  },
-  beforeCreate() {
-    console.log("beforeCreate");
   },
   created() {
-    console.log("created");
-  },
-  beforeMount() {
-    console.log("beforeMount");
-  },
-  mounted() {
-    console.log("mounted");
-  },
-  beforeUpdate() {
-    console.log("beforeUpdate");
-  },
-  updated() {
-    console.log("updated");
-  },
-  beforeDestroy() {
-    console.log("beforeDestroy");
-  },
-  destroyed() {
-    console.log("destroyed");
+    if (!this.$store.state.auth.token) {
+      this.$router.push("/login");
+    }
   },
 };
 </script>
-
-<style scoped>
-.select-form {
-  border: 1px solid;
-  width: 20rem;
-  align-content: center;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-</style>

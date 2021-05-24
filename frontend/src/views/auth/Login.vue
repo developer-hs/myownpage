@@ -16,28 +16,24 @@
           required
           v-model="password"
         ></v-text-field>
-        <v-btn color="success" class="login-button mr-4" @click="logIn">
+        <v-btn color="success" class="mr-4" @click="logIn">
           logIn
         </v-btn>
 
-        <v-btn color="error" class="mr-4" @click="reset">
-          SignUp
+        <v-btn color="error" class="mr-4" @click="signUp">
+          <router-link :to="{ name: 'signup' }">signup</router-link>
         </v-btn>
-
         <v-btn color="warning" @click="resetValidation">
           Find Password
         </v-btn>
       </v-form>
     </v-container>
-    <v-container v-if="token">
-      <v-btn @click="logOut">Logout</v-btn>
-    </v-container>
   </v-app>
 </template>
 <script>
-import callApi from "../api/callApi";
-import store from "../store";
-
+import callApi from "../../api/callApi";
+import store from "../../store";
+import { AccessToken } from "../../variable";
 export default {
   data() {
     return {
@@ -55,7 +51,6 @@ export default {
       token: this.$store.state.auth.token,
     };
   },
-
   methods: {
     logIn() {
       callApi("post", "/users/login/", {
@@ -65,6 +60,7 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             store.commit("auth/setToken", response.data.token);
+            this.$router.push("/");
           }
         })
         .catch((error) => {
@@ -75,9 +71,12 @@ export default {
           }
         });
     },
+    signUp() {
+      this.$router.push("auth/sign-up");
+    },
     logOut() {
       this.$store.state.auth.token = null;
-      localStorage.removeItem("access_token");
+      localStorage.removeItem(AccessToken);
     },
     validate() {
       this.$refs.form.validate();
@@ -89,8 +88,16 @@ export default {
       this.$refs.form.resetValidation();
     },
   },
-  updated() {
-    console.log(this.$store.state.auth.token);
+  mounted() {
+    if (this.$store.state.auth.token) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
+<style>
+router-link {
+  text-decoration: none;
+  color: white;
+}
+</style>
