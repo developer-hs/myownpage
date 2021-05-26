@@ -1,8 +1,10 @@
 <template>
-  <v-app>
+  <v-app v-if="this.$store.state.auth.token">
     <v-form class="pt-5" id="search-form" @submit="onSearch">
+      <v-card>
+        <bookmark />
+      </v-card>
       <v-container>
-        <v-btn small fab text color="green">NAVER</v-btn>
         <v-text-field v-model="searchTerm">
           <template v-slot:label>
             사이트 <strong>검색</strong>
@@ -16,32 +18,31 @@
     <v-row>
       <v-btn class="ml-9" @click="logOut">logout</v-btn>
     </v-row>
+    <v-row>
+      <v-btn class="ml-9" @click="getUserInfo">getUserInfo</v-btn>
+    </v-row>
   </v-app>
 </template>
 <script>
-import { AccessToken } from "../variable";
+import Bookmark from "../views/Bookmark";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       searchTerm: "",
     };
   },
+
   methods: {
+    ...mapActions("auth", ["logOut", "getUserInfo"]),
     onSearch() {
       window.open(
         `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${this.searchTerm}`
       );
     },
-    logOut() {
-      this.$store.state.auth.token = null;
-      localStorage.removeItem(AccessToken);
-      document.location.reload();
-    },
   },
-  created() {
-    if (!this.$store.state.auth.token) {
-      this.$router.push("/login");
-    }
+  components: {
+    Bookmark,
   },
 };
 </script>

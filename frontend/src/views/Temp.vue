@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
 export default {
   data: () => ({
     title: "Vue js",
@@ -46,6 +47,14 @@ export default {
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     tableShow: true,
   }),
+  computed: {
+    ...mapGetters({
+      change1: "function1",
+      change2: "function2 ",
+    }),
+    // ...mapGetters(["function1", "function2"]),
+    ...mapState(["state_key"]),
+  },
   watch: {
     input() {
       console.log(this.input1);
@@ -53,6 +62,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["funtion1"]),
+    ...mapActions(["action1", "action2"]),
+    // setState() {
+    //   this.action1(attribute)
+    // },
     getData() {
       alert(this.input1);
     },
