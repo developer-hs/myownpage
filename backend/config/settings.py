@@ -163,9 +163,8 @@ REST_FRAMEWORK = {
     ),
     # ↓ Authentication https://www.django-rest-framework.org/api-guide/authentication/#setting-the-authentication-scheme
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }
 
