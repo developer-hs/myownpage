@@ -18,9 +18,14 @@ from django.urls import path
 from django.urls.conf import include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/token/', obtain_jwt_token, name="setToken"),
+    path('api/v1/token/verify/', verify_jwt_token),
+    path('api/v1/token/refresh/', refresh_jwt_token),
     path("api/v1/users/", include("users.urls"))
 ]
 
