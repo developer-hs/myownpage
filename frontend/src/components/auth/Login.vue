@@ -13,7 +13,6 @@
             <div class="pa-3">
               <v-form ref="form" v-model="valid" lazy-validation>
                 <v-text-field
-                  v
                   v-model="loginObj.username"
                   :counter="10"
                   :rules="nameRules"
@@ -86,6 +85,7 @@ export default {
   computed: {
     ...mapState({
       isLoginError: (state) => state.auth.isLoginError,
+      isLoggedIn: (state) => state.auth.isLoggedIn,
     }),
   },
   methods: {

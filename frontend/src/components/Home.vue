@@ -1,10 +1,8 @@
 <template>
   <v-app v-if="this.$store.state.auth.token">
     <v-form class="pt-5" id="search-form" @submit="onSearch">
-      <v-card>
-        <bookmark />
-      </v-card>
       <v-container>
+        <bookmark />
         <v-text-field v-model="searchTerm">
           <template v-slot:label>
             사이트 <strong>검색</strong>
@@ -17,9 +15,6 @@
     </v-form>
     <v-row>
       <v-btn class="ml-9" @click="logOut">logout</v-btn>
-    </v-row>
-    <v-row>
-      <v-btn class="ml-9" @click="getUserInfo">getUserInfo</v-btn>
     </v-row>
   </v-app>
 </template>

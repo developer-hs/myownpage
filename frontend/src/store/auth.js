@@ -43,7 +43,6 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.status == 401) {
             commit("loginError");
           }
@@ -55,10 +54,10 @@ export default {
       window.location.reload();
     },
     getUserInfo({ state, commit }) {
-      console.log(state);
       callApi("post", "/users/user_info", null, state.token)
         .then((response) => {
           if (response.status === 200) {
+            console.log(response.data);
             commit("setUserInfo", response.data);
           }
         })

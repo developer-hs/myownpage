@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/components/Home";
 import Login from "@/components/auth/Login";
 import Auth from "@/components/auth/Auth";
 import store from "./store";
@@ -14,7 +13,6 @@ const rejectAuthUser = (to, from, next) => {
 };
 
 const onlyAuthUser = (to, from, next) => {
-  console.log(store.state.auth.token);
   if (store.state.auth.token === null) {
     next({ name: "login" });
   } else {
@@ -24,6 +22,7 @@ const onlyAuthUser = (to, from, next) => {
 };
 Vue.use(VueRouter);
 const SignUp = () => import("@/components/auth/SignUp");
+const Home = () => import("@/components/Home");
 const router = new VueRouter({
   mode: "history",
   routes: [
