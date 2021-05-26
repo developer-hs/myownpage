@@ -82,7 +82,7 @@ export default {
 
   methods: {
     signUp() {
-      callApi("post", "/users/", {
+      callApi("post", "/users/sign-up", {
         username: this.username,
         email: this.email,
         password: this.password,
@@ -90,6 +90,7 @@ export default {
         last_name: this.lastName,
       })
         .then((response) => {
+          localStorage.setItem("search_bookmark", "NAVER");
           console.log(response.status);
         })
         .catch((error) => {

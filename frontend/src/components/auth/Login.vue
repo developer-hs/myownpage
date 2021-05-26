@@ -16,7 +16,7 @@
                   v-model="loginObj.username"
                   :counter="10"
                   :rules="nameRules"
-                  @click="isLoginError = false"
+                  @click="isError = false"
                   label="Name"
                   required
                 ></v-text-field>
@@ -26,7 +26,7 @@
                   :type="passwordShow ? 'text' : 'password'"
                   label="Password"
                   @click:append="passwordShow = !passwordShow"
-                  @click="isLoginError = false"
+                  @click="isError = false"
                   required
                   v-model="loginObj.password"
                 ></v-text-field>
@@ -80,6 +80,7 @@ export default {
         (v) => (v && v.length >= 3) || "Passwrod must ba less than 3 integer",
       ],
       passwordShow: "",
+      isError: false,
     };
   },
   computed: {

@@ -5,7 +5,7 @@ import Auth from "@/components/auth/Auth";
 import store from "./store";
 
 const rejectAuthUser = (to, from, next) => {
-  if (store.state.auth.token === true) {
+  if (store.state.auth.token) {
     next({ name: "home" });
   } else {
     next();
@@ -13,7 +13,7 @@ const rejectAuthUser = (to, from, next) => {
 };
 
 const onlyAuthUser = (to, from, next) => {
-  if (store.state.auth.token === null) {
+  if (!store.state.auth.token) {
     next({ name: "login" });
   } else {
     store.dispatch("auth/getUserInfo");

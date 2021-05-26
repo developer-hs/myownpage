@@ -1,6 +1,5 @@
 import { AccessToken } from "../variable";
 import callApi from "../api/callApi";
-import router from "../router";
 
 export default {
   namespaced: true,
@@ -17,7 +16,6 @@ export default {
     setToken(state, token) {
       state.token = token;
       state.isLoginError = false;
-
       localStorage.setItem(AccessToken, token);
     },
     setUserInfo(state, info) {
@@ -39,7 +37,7 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             commit("setToken", response.data.token);
-            router.push({ name: "home" });
+            window.location.reload();
           }
         })
         .catch((error) => {
@@ -50,7 +48,6 @@ export default {
     },
     logOut({ commit }) {
       commit("logOut");
-      router.push({ name: "login" });
       window.location.reload();
     },
     getUserInfo({ state, commit }) {
