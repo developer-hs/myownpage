@@ -16,13 +16,16 @@ from rest_framework.parsers import JSONParser
 
 User = get_user_model()
 
+
 @api_view(["POST"])
-@permission_classes([AllowAny,])
+@permission_classes([AllowAny, ])
 def signup(request):
     serializers = UserSerializer(data=request.data)
     if serializers.is_valid():
         serializers.save()
-        return Response(serializers.data , status=status.HTTP_201_CREATED)
+        return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["POST"])
 @permission_classes((AllowAny,))
@@ -30,4 +33,4 @@ def signup(request):
 def user_info(request):
     user = request.user
     serializer = UserInfoSerializer(user)
-    return Response(serializer.data , status=status.HTTP_200_OK)
+    return Response(serializer.data, status=status.HTTP_200_OK)

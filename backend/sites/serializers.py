@@ -11,4 +11,4 @@ class BookmarkSerializer(serializers.ModelSerializer):
     sites = InputSiteSerializer(read_only=True  , many=True)
     class Meta:
         model = BookmarkSites
-        fields = ["sites"]
+        fields = ["sites" ,"locked"]

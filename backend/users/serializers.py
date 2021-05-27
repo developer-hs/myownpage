@@ -15,10 +15,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ("id",)
         # extra_kwargs = {'url': {'view_name': 'authentication:user-detail'}}
 
-    def validate(self, attrs):
-        print(attrs)
-        return super().validate(attrs)
-
     def validate_first_name(self, value):
         return value.upper()
 
@@ -27,7 +23,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         user = super().create(validated_data)
         user.set_password(password)
         user.save()
-        BookmarkSites.objects.create(user=user)
+        BookmarkSites.objects.create(user=user , locked ="NAVER")
         user.bookmark.sites.add(InputSite.objects.get(name="NAVER"))
         return user
 
