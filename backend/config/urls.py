@@ -26,7 +26,9 @@ urlpatterns = [
     path('api/v1/token/', obtain_jwt_token, name="setToken"),
     path('api/v1/token/verify/', verify_jwt_token),
     path('api/v1/token/refresh/', refresh_jwt_token),
-    path("api/v1/users/", include("users.urls"))
+    path("api/v1/users/", include("users.urls")),
+    path("api/v1/notepad/", include("notepad.urls"))
+    
 ]
 
 if settings.DEBUG:

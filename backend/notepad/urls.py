@@ -2,11 +2,10 @@ from django.urls.conf import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
-app_name = "users"
 
 urlpatterns = [
-    path("user_info", views.user_info),
-    path("sign-up" , views.signup)
+    path("info", views.user_notepads),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+

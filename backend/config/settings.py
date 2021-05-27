@@ -40,7 +40,9 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     "core.apps.CoreConfig",
     "users.apps.UsersConfig",
-    "sites.apps.SitesConfig"
+    "sites.apps.SitesConfig",
+    "notepad.apps.NotepadConfig"
+
 ]
 
 THIRD_PARTY_APPS = ["rest_framework", 'corsheaders',
