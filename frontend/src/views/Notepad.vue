@@ -1,7 +1,7 @@
 <template>
   <v-col sm="10" offset-sm="4">
     <v-card class="mx-auto mt-12" max-width="600">
-      <v-system-bar></v-system-bar>
+      <v-system-bar color="blue lighten-3"></v-system-bar>
 
       <v-toolbar flat color="transparent">
         <v-btn icon>
@@ -24,14 +24,14 @@
         >
           <v-list-item-content>
             <span
-              class="text-uppercase font-weight-regular caption"
+              class="text-uppercase font-weight-light caption"
               v-text="item.datetime_created"
             ></span>
 
-            <div v-text="item.memo" />
+            <div class="pt-2" v-text="item.memo" />
             <div class="d-flex justify-end">
               <v-btn
-                @click="removeMemo(index)"
+                @click="removeMemo(notepad[index].memo)"
                 class="mr-3"
                 x-small
                 fab
@@ -48,41 +48,30 @@
       </v-list>
       <div class="pr-3 pl-3">
         <v-text-field
+          label="Memo input"
           v-model="memo"
-          @keyup.enter="onMemoHandler"
+          @keypress.enter="onMemoHandler"
         ></v-text-field>
       </div>
     </v-card>
   </v-col>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       memo: "",
-      item: [{ header: "Memo" }],
+      notepad: this.$store.state.notepads.notepad,
     };
   },
-  computed: {
-    ...mapState({
-      notepad: (state) => state.notepads.notepad,
-    }),
-  },
+  computed: {},
   methods: {
+    ...mapActions("notepads", ["removeMemo"]),
     onMemoHandler() {
-      this.items.push({
-        memo: this.memo,
-        datetime_created: new Date(),
-      });
+      this.$store.dispatch("notepads/createMemo", { memo: this.memo });
+      this.memo = "";
     },
-    removeMemo(index) {
-      console.log(index);
-      this.items.splice(index, 1);
-    },
-  },
-  beforeMount() {
-    this.items = this.notepad;
   },
 };
 </script>

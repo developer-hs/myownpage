@@ -1,17 +1,16 @@
 <template>
   <v-flex>
-    <div class="text-xs-center justify-center">
+    <div class="bookmark-bar text-xs-center justify-center">
       <v-btn
         fab
         depressed
         class="mr-3 font-weight-medium"
         small
         color="white"
-        :key="i"
-        v-for="(d, i) in userInfo.bookmark.sites"
-        @click="onSelectSite"
+        :key="index"
+        v-for="(site, index) in userInfo.bookmark.sites"
       >
-        {{ d.name }}
+        {{ site.name }}
       </v-btn>
     </div>
   </v-flex>
@@ -20,36 +19,35 @@
 import { mapState } from "vuex";
 export default {
   data() {
-    return {
-      fixedSite: "NAVER",
-      preSelectNode: "",
-      selectNode: "",
-    };
+    return {};
   },
   computed: {
     ...mapState({
       userInfo: (state) => state.auth.userInfo,
-      select: (state) => state.auth.select,
     }),
   },
   methods: {
-    onSelectSite(value) {
-      console.log(value.target.childNodes.length);
-      this.userInfo.bookmark.sites.forEach((site) => {
-        if (value.target.childNodes.length === 1) {
-          console.log(site);
-          this.selectNode = value.target.parentNode;
-        } else {
-          this.selectNode = value.target;
+    paintBookmark() {
+      const bookmarBar = document.querySelector(".bookmark-bar");
+      const bookmark = bookmarBar.childNodes;
+      const locked = this.userInfo.bookmark.locked;
+      for (let i = 0; i < bookmark.length; i++) {
+        if (bookmark[i].innerText === locked) {
+          bookmark[i].classList.add(locked.toLowerCase());
         }
-      });
-      if (this.preSelectNode) {
-        this.preSelectNode.classList.remove("green", "lighten-3");
       }
-      localStorage.setItem("search_bookmark", this.selectNode.innerText);
-      this.selectNode.className += " green lighten-3";
-      this.preSelectNode = this.selectNode;
     },
+  },
+  mounted() {
+    this.paintBookmark();
   },
 };
 </script>
+<style scoped>
+.daum {
+  color: #3498db;
+}
+.naver {
+  color: #27ae60;
+}
+</style>

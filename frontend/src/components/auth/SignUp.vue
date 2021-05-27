@@ -62,7 +62,8 @@
 <script>
 import callApi from "../../api/callApi";
 export default {
-  data: () => ({
+  data() {
+    return {
     valid: true,
     username: "",
     nameRules: [
@@ -78,7 +79,8 @@ export default {
     passwordShow: false,
     firstName: "",
     lastName: "",
-  }),
+    }
+  },
 
   methods: {
     signUp() {
