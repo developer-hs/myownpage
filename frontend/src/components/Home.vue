@@ -13,13 +13,21 @@
         </v-text-field>
       </v-container>
     </v-form>
-    <v-row>
-      <v-btn class="ml-9" @click="logOut">logout</v-btn>
-    </v-row>
+    <v-container class="d-flex">
+      <v-col>
+        <v-btn @click="logOut">logout</v-btn>
+      </v-col>
+      <v-layout align-center>
+        <v-row>
+          <notepad />
+        </v-row>
+      </v-layout>
+    </v-container>
   </v-app>
 </template>
 <script>
 import Bookmark from "../views/Bookmark";
+import Notepad from "../views/Notepad";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -27,7 +35,6 @@ export default {
       searchTerm: "",
     };
   },
-
   methods: {
     ...mapActions("auth", ["logOut", "getUserInfo"]),
     onSearch() {
@@ -38,6 +45,7 @@ export default {
   },
   components: {
     Bookmark,
+    Notepad,
   },
 };
 </script>

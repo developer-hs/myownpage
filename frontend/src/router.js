@@ -12,11 +12,12 @@ const rejectAuthUser = (to, from, next) => {
   }
 };
 
-const onlyAuthUser = (to, from, next) => {
+const onlyAuthUser = async (to, from, next) => {
   if (!store.state.auth.token) {
     next({ name: "login" });
   } else {
-    store.dispatch("auth/getUserInfo");
+    await store.dispatch("notepads/getNotepad");
+    await store.dispatch("auth/getUserInfo");
     next();
   }
 };
