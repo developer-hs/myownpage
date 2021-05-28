@@ -4,7 +4,8 @@ from . import views
 
 
 urlpatterns = [
-    path("memo", views.NotepadsAPIView.as_view()),
+    path("", views.BookmarkAPIView),
+
 ]
 
-# urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = format_suffix_patterns(urlpatterns)
