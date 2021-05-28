@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class InputSite(models.Model):
     name = models.CharField(max_length=180)
     site_url = models.URLField()
@@ -7,10 +8,13 @@ class InputSite(models.Model):
     def __str__(self):
         return self.name
 
+
 class BookmarkSites(models.Model):
-    sites = models.ManyToManyField("InputSite" , related_name="site" , blank=True)
+    sites = models.ManyToManyField(
+        "InputSite", related_name="site", blank=True)
     locked = models.CharField(max_length=30)
-    user = models.OneToOneField("users.User" , related_name="bookmark" , on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        "users.User", related_name="bookmark", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username

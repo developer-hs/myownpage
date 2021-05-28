@@ -4,7 +4,8 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.BookmarkAPIView),
+    path("", views.BookmarkAPIView.as_view()),
+    path("locked/",views.bookmark_site_locked)
 
 ]
 

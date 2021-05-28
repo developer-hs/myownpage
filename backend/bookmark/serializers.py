@@ -5,7 +5,7 @@ from .models import BookmarkSites, InputSite
 class InputSiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = InputSite
-        fields = ["name", ]
+        fields = ["name", "site_url"]
         read_only_field = '__all__'
 
 
@@ -15,4 +15,4 @@ class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookmarkSites
         fields = ["id", "sites", "locked"]
-        read_only_fields = ("id")
+        read_only_fields = ("id",)

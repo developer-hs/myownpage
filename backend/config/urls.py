@@ -28,8 +28,8 @@ urlpatterns = [
     path('api/v1/token/refresh/', refresh_jwt_token),
     path("api/v1/users/", include("users.urls")),
     path("api/v1/notepad/", include("notepad.urls")),
-    path("api/v1/sites/", include("sites.urls"))
-    
+    path("api/v1/bookmark/", include("bookmark.urls"))
+
 ]
 
 if settings.DEBUG:
