@@ -1,7 +1,7 @@
 from decimal import ConversionSyntax
 from django.contrib.auth import authenticate
 from django.core.exceptions import RequestDataTooBig
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import notepad
@@ -13,36 +13,31 @@ from .models import NotePads
 from .serializers import NotePadSerializer
 
 
-
 class NotepadsAPIView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
-    def get(self,request):
+
+    def get(self, request):
         memos = NotePads.objects.filter(user=request.user)
         serializer = NotePadSerializer(memos, many=True)
         return Response(serializer.data)
 
-    def post(self,request):
-        request_memo = request.data.get("memo")
-        user = request.user
-        memo = NotePads.objects.filter(memo=request_memo , user = user)
-        if not memo:
-            serializer = NotePadSerializer(
-                data=request.data, context={"user": user})
-            if serializer.is_valid():
-                serializer.save()
-                return Response(status=status.HTTP_201_CREATED)
+    def post(self, request):
+        serializer = NotePadSerializer(data=request.data)
+        if serializer.is_valid():
+            new_memo = serializer.save(user=request.user)
+            new_memo_serializer = NotePadSerializer(new_memo).data
+            return Response(new_memo_serializer, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request):
-        request_memo = request.GET.get("text",None)
-        user = request.user
-        memo = NotePads.objects.get(memo=request_memo , user=user)
+    def delete(self, request, pk):
+        memo = NotePads.objects.get(pk=pk)
         if memo is not None:
+            if memo.user != request.user:
+                return Response(status=status.HTTP_403_FORBIDDEN)
             memo.delete()
             return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def put(self,request):
+    def put(self, request):
         pass
-

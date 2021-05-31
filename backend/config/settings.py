@@ -41,7 +41,8 @@ PROJECT_APPS = [
     "core.apps.CoreConfig",
     "users.apps.UsersConfig",
     "bookmark.apps.BookmarkConfig",
-    "notepad.apps.NotepadConfig"
+    "notepad.apps.NotepadConfig",
+    "search.apps.SearchConfig",
 
 ]
 
