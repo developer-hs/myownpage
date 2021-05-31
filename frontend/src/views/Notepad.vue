@@ -1,7 +1,7 @@
 <template>
-  <v-col sm="10" offset-sm="4">
+  <v-col sm="10" offset-sm="5">
     <v-card class="mx-auto mt-12" max-width="600">
-      <v-system-bar color="blue lighten-3"></v-system-bar>
+      <v-system-bar color="grey lighten-1"></v-system-bar>
 
       <v-toolbar flat color="transparent">
         <v-btn icon>
@@ -31,7 +31,7 @@
             <div class="pt-2" v-text="item.memo" />
             <div class="d-flex justify-end">
               <v-btn
-                @click="removeMemo(notepad[index].memo)"
+                @click="removeMemo(notepad[index].id)"
                 class="mr-3"
                 x-small
                 fab

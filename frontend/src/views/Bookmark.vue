@@ -8,7 +8,8 @@
         small
         color="white"
         :key="index"
-        v-for="(site, index) in userInfo.bookmark.sites"
+        v-for="(site, index) in bookmark.sites"
+        @click="siteLocked(site.name)"
       >
         {{ site.name }}
       </v-btn>
@@ -16,24 +17,34 @@
   </v-flex>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {};
   },
   computed: {
     ...mapState({
-      userInfo: (state) => state.auth.userInfo,
+      bookmark: (state) => state.bookmark.bookmark,
     }),
   },
   methods: {
-    paintBookmark() {
+    ...mapActions("bookmark", ["siteLocked"]),
+    siteLocked(siteName) {
+      const preSiteName = this.bookmark.locked;
+      this.$store.dispatch("bookmark/siteLocked", siteName);
+      setTimeout(() => {
+        this.paintBookmark(preSiteName);
+      }, 50);
+    },
+    paintBookmark(preSiteName) {
       const bookmarBar = document.querySelector(".bookmark-bar");
-      const bookmark = bookmarBar.childNodes;
-      const locked = this.userInfo.bookmark.locked;
-      for (let i = 0; i < bookmark.length; i++) {
-        if (bookmark[i].innerText === locked) {
-          bookmark[i].classList.add(locked.toLowerCase());
+      const el_Bookmark = bookmarBar.childNodes;
+      const locked = this.bookmark.locked;
+      for (let i = 0; i < el_Bookmark.length; i++) {
+        if (el_Bookmark[i].innerText === locked) {
+          el_Bookmark[i].classList.add(locked.toLowerCase());
+        } else if (el_Bookmark[i].innerText === preSiteName) {
+          el_Bookmark[i].classList.remove(preSiteName.toLowerCase());
         }
       }
     },
@@ -49,5 +60,8 @@ export default {
 }
 .naver {
   color: #27ae60;
+}
+.google {
+  color: #c23616;
 }
 </style>

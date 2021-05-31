@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Login from "@/components/auth/Login";
 import Auth from "@/components/auth/Auth";
 import store from "./store";
-
+import Setting from "@/components/Setting";
 const rejectAuthUser = (to, from, next) => {
   if (store.state.auth.token) {
     next({ name: "home" });
@@ -12,18 +12,23 @@ const rejectAuthUser = (to, from, next) => {
   }
 };
 
-const onlyAuthUser = async (to, from, next) => {
+const onlyAuthUser = (to, from, next) => {
   if (!store.state.auth.token) {
     next({ name: "login" });
   } else {
-    await store.dispatch("notepads/getNotepad");
-    await store.dispatch("auth/getUserInfo");
-    next();
+    store.dispatch("notepads/getNotepad");
+    store.dispatch("auth/getUserInfo");
+    store.dispatch("bookmark/getBookmark");
+    store.dispatch("search/getSearchHistory");
+    setTimeout(() => {
+      next();
+    }, 250);
   }
 };
 Vue.use(VueRouter);
 const SignUp = () => import("@/components/auth/SignUp");
 const Home = () => import("@/components/Home");
+
 const router = new VueRouter({
   mode: "history",
   routes: [
@@ -46,6 +51,12 @@ const router = new VueRouter({
           beforeEnter: rejectAuthUser,
         },
       ],
+    },
+    {
+      path: "/setting",
+      component: Setting,
+      name: "setting",
+      beforeEnter: onlyAuthUser,
     },
   ],
 });

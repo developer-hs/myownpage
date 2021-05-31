@@ -1,26 +1,27 @@
 <template>
   <v-app v-if="this.$store.state.auth.token">
-    <v-form class="pt-5" id="search-form" @submit="onSearch">
-      <v-container>
-        <bookmark />
-        <v-text-field v-model="searchTerm">
-          <template v-slot:label>
-            사이트 <strong>검색</strong>
-            <v-icon style="vertical-align: middle">
-              mdi-file-find
-            </v-icon>
-          </template>
-        </v-text-field>
-      </v-container>
-    </v-form>
-    <v-container class="d-flex">
-      <v-col>
-        <v-btn @click="logOut">logout</v-btn>
-      </v-col>
-      <v-layout align-center>
+    <v-container>
+      <div class="d-flex">
         <v-row>
-          <notepad />
+          <bookmark />
         </v-row>
+        <v-row class="justify-end">
+          <v-btn
+            fab
+            depressed
+            small
+            color="white"
+            @click="$router.push({ name: 'setting' })"
+            ><v-icon>mdi-cog</v-icon>
+          </v-btn>
+        </v-row>
+      </div>
+      <search-bar />
+    </v-container>
+    <v-container class="d-flex">
+      <v-btn @click="logOut">LogOut</v-btn>
+      <v-layout>
+        <notepad />
       </v-layout>
     </v-container>
   </v-app>
@@ -28,24 +29,20 @@
 <script>
 import Bookmark from "../views/Bookmark";
 import Notepad from "../views/Notepad";
+import SearchBar from "../views/SearchBar";
 import { mapActions } from "vuex";
+
 export default {
   data() {
-    return {
-      searchTerm: "",
-    };
+    return {};
   },
   methods: {
     ...mapActions("auth", ["logOut", "getUserInfo"]),
-    onSearch() {
-      window.open(
-        `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${this.searchTerm}`
-      );
-    },
   },
   components: {
     Bookmark,
     Notepad,
+    SearchBar,
   },
 };
 </script>

@@ -11,12 +11,11 @@ export default {
       state.notepad = notepad;
     },
     appendMemo(state, memo) {
-      const fullMemo = { memo, datetime_created: new Date() };
-      state.notepad.unshift(fullMemo);
+      state.notepad.unshift(memo);
     },
-    removeMemo(state, memo) {
+    removeMemo(state, pk) {
       for (let i = 0; i < state.notepad.length; i++) {
-        if (state.notepad[i].memo === memo) {
+        if (state.notepad[i].id === pk) {
           state.notepad.splice(i, 1);
         }
       }
@@ -24,7 +23,7 @@ export default {
   },
   actions: {
     getNotepad({ commit }) {
-      callApi("get", "/notepad/info", null, store.state.auth.token)
+      callApi("get", "/notepad/memo", null, store.state.auth.token)
         .then((response) => {
           commit("setNotepad", response.data);
         })
@@ -36,23 +35,24 @@ export default {
       callApi("post", "/notepad/memo", memo, store.state.auth.token)
         .then((response) => {
           if (response.status == 201) {
-            commit("appendMemo", memo.memo);
+            commit("appendMemo", response.data);
           }
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    removeMemo({ commit }, memo) {
+    removeMemo({ commit }, pk) {
+      console.log(pk)
       callApi(
-        "post",
-        `/notepad/memo/delete`,
-        { memo: memo },
+        "delete",
+        `/notepad/memo/${pk}/`,
+        null,
         store.state.auth.token
       )
         .then((response) => {
           if (response.status === 200) {
-            commit("removeMemo", memo);
+            commit("removeMemo",pk);
           }
         })
         .catch((error) => {
