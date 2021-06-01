@@ -39,5 +39,17 @@ class NotepadsAPIView(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request):
-        pass
+    def put(self, request ,pk):
+        memo = NotePads.objects.get(pk=pk)
+        if memo is not None:
+            if memo.user != request.user:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+            serializer = NotePadSerializer(memo, data=request.data)
+            if serializer.is_valid():
+                memo = serializer.save()
+                serializer_memo = NotePadSerializer(memo).data
+                return Response(serializer_memo , status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
