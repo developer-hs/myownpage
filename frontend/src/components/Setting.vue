@@ -9,8 +9,8 @@
           :mini-variant="primaryDrawer.mini"
           :permanent="primaryDrawer.type === 'permanent'"
           :temporary="primaryDrawer.type === 'temporary'"
-          app
           overflow
+          app
         >
           <v-col class="text-center">BookMark Settings</v-col>
         </v-navigation-drawer>
@@ -26,7 +26,7 @@
         <v-footer :inset="footer.inset" app>
           <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
         </v-footer>
-        <main-setting :primaryDrawer="primaryDrawer" />
+        <main-setting />
       </v-app>
     </v-app>
   </div>

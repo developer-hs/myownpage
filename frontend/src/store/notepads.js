@@ -43,21 +43,18 @@ export default {
         });
     },
     removeMemo({ commit }, pk) {
-      console.log(pk)
-      callApi(
-        "delete",
-        `/notepad/memo/${pk}/`,
-        null,
-        store.state.auth.token
-      )
+      callApi("delete", `/notepad/memo/${pk}/`, null, store.state.auth.token)
         .then((response) => {
           if (response.status === 200) {
-            commit("removeMemo",pk);
+            commit("removeMemo", pk);
           }
         })
         .catch((error) => {
           console.log(console.log(error));
         });
+    },
+    updateMemo(state, memo) {
+      callApi("put", `/notepad/memo/${memo.id}/`, memo, store.state.auth.token);
     },
   },
 };

@@ -40,17 +40,20 @@ export default {
   },
   methods: {
     ...mapActions("search", ["removeSearchHistory"]),
-    onSearch() {
-      this.$store.dispatch("search/createSearchHistory", this.searchTerm);
+    openSearch() {
       for (let i = 0; i < this.sites.length; i++) {
         if (this.sites[i].name === this.locked) {
           window.open(`${this.sites[i].site_url}${this.searchTerm}`);
         }
       }
     },
+    onSearch() {
+      this.$store.dispatch("search/createSearchHistory", this.searchTerm);
+      this.openSearch();
+    },
     onSearchHistory(event) {
       this.searchTerm = event.target.innerText;
-      this.onSearch();
+      this.openSearch();
     },
   },
 };
