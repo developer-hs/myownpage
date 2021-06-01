@@ -16,6 +16,7 @@
         close
         v-for="(history, index) in searchHistory"
         @click:close="removeSearchHistory(history.id)"
+        @click="onSearchHistory"
       >
         {{ history.search_term }}
       </v-chip>
@@ -46,6 +47,10 @@ export default {
           window.open(`${this.sites[i].site_url}${this.searchTerm}`);
         }
       }
+    },
+    onSearchHistory(event) {
+      this.searchTerm = event.target.innerText;
+      this.onSearch();
     },
   },
 };
