@@ -1,6 +1,6 @@
 <template>
-  <v-col sm="10" offset-sm="5">
-    <v-card class="mx-auto mt-12" max-width="600">
+  <v-col sm="10" offset="1">
+    <v-card class="mx-auto mt-12 rounded-0" max-width="600">
       <v-system-bar color="grey lighten-1"></v-system-bar>
 
       <v-toolbar flat color="transparent">

@@ -54,7 +54,6 @@ export default {
       callApi("post", "/users/user_info", null, state.token)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data);
             commit("setUserInfo", response.data);
           }
         })

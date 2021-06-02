@@ -27,7 +27,6 @@ export default {
       callApi("get", "/search/history/", null, store.state.auth.token)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data);
             commit("setSearchHistory", response.data);
           }
         })

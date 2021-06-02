@@ -52,6 +52,8 @@
               </v-row>
             </v-card-text>
             <v-card-actions>
+              <v-btn color="red" text @click="logOut">LogOut</v-btn>
+
               <v-spacer></v-spacer>
               <v-btn text>Cancel</v-btn>
               <v-btn text color="primary">Submit</v-btn>
@@ -64,7 +66,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {};
@@ -75,6 +77,9 @@ export default {
       drawers: (state) => state.settings.drawers,
       primaryDrawer: (state) => state.settings.primaryDrawer,
     }),
+  },
+  methods: {
+    ...mapActions("auth", ["logOut"]),
   },
 };
 </script>

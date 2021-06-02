@@ -64,22 +64,22 @@ import callApi from "../../api/callApi";
 export default {
   data() {
     return {
-    valid: true,
-    username: "",
-    nameRules: [
-      (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
-    ],
-    email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    password: "",
-    passwordShow: false,
-    firstName: "",
-    lastName: "",
-    }
+      valid: true,
+      username: "",
+      nameRules: [
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+      ],
+      email: "",
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
+      password: "",
+      passwordShow: false,
+      firstName: "",
+      lastName: "",
+    };
   },
 
   methods: {
@@ -92,8 +92,9 @@ export default {
         last_name: this.lastName,
       })
         .then((response) => {
-          localStorage.setItem("search_bookmark", "NAVER");
-          console.log(response.status);
+          if (response.status === 201) {
+            localStorage.setItem("search_bookmark", "NAVER");
+          }
         })
         .catch((error) => {
           if (error.response.status == 400) {

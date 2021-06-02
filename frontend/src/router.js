@@ -20,6 +20,7 @@ const onlyAuthUser = (to, from, next) => {
     store.dispatch("auth/getUserInfo");
     store.dispatch("bookmark/getBookmark");
     store.dispatch("search/getSearchHistory");
+    store.dispatch("settings/getSites");
     setTimeout(() => {
       next();
     }, 250);

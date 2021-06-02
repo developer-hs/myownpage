@@ -4,9 +4,9 @@
       <v-btn
         fab
         depressed
-        class="mr-3 font-weight-medium"
+        text
+        class="mr-5 font-weight-medium"
         small
-        color="white"
         :key="index"
         v-for="(site, index) in bookmark.sites"
         @click="siteLocked(site.name)"
@@ -63,5 +63,8 @@ export default {
 }
 .google {
   color: #c23616;
+}
+.missha {
+  color: #686de0;
 }
 </style>

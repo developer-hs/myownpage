@@ -25,7 +25,6 @@ export default {
         });
     },
     siteLocked({ commit }, siteName) {
-      console.log(siteName);
       callApi(
         "put",
         "/bookmark/locked/",
