@@ -1,4 +1,5 @@
 from decimal import ConversionSyntax
+from functools import partial
 from django.contrib.auth import authenticate
 from django.core.exceptions import RequestDataTooBig
 from rest_framework import serializers, status
@@ -44,7 +45,7 @@ class NotepadsAPIView(APIView):
         if memo is not None:
             if memo.user != request.user:
                 return Response(status=status.HTTP_403_FORBIDDEN)
-            serializer = NotePadSerializer(memo, data=request.data)
+            serializer = NotePadSerializer(memo, data=request.data , partial=True)
             if serializer.is_valid():
                 memo = serializer.save()
                 serializer_memo = NotePadSerializer(memo).data

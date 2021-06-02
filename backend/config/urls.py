@@ -30,6 +30,7 @@ urlpatterns = [
     path("api/v1/notepad/", include("notepad.urls")),
     path("api/v1/bookmark/", include("bookmark.urls")),
     path("api/v1/search/", include("search.urls")),
+    path("api/v1/schedule/", include("schedules.urls")),
 
 ]
 
