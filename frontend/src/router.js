@@ -21,9 +21,11 @@ const onlyAuthUser = (to, from, next) => {
     store.dispatch("bookmark/getBookmark");
     store.dispatch("search/getSearchHistory");
     store.dispatch("settings/getSites");
+    store.dispatch("calendar/getSchedule");
+
     setTimeout(() => {
       next();
-    }, 250);
+    }, 300);
   }
 };
 Vue.use(VueRouter);

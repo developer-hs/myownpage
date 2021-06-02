@@ -19,10 +19,10 @@ export default {
   getters: {},
   mutations: {
     setSites(state, allSite) {
-      const userSites = store.state.bookmark.bookmark.sites;
       for (let i = 0; i < allSite.length; i++) {
         state.sites[allSite[i].name] = false;
       }
+      const userSites = store.state.bookmark.bookmark.sites;
       for (let i = 0; i < userSites.length; i++) {
         state.sites[userSites[i].name] = true;
       }

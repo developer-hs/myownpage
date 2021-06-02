@@ -54,7 +54,13 @@ export default {
         });
     },
     updateMemo(state, memo) {
-      callApi("put", `/notepad/memo/${memo.id}/`, memo, store.state.auth.token);
+      callApi("put", `/notepad/memo/${memo.id}/`, memo, store.state.auth.token)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response);
+          }
+        })
+        .catch((error) => console.log(error));
     },
   },
 };

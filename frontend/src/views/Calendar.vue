@@ -67,12 +67,64 @@
         </v-menu>
       </v-sheet>
     </v-col>
+    <v-dialog v-model="dialog" max-width="70rem">
+      <v-card class="pa-6">
+        <v-card-text>
+          <span>메모수정</span>
+          <v-row>
+            <v-col cols="11" sm="5">
+              <v-menu
+                ref="menu"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="time"
+                transition="scale-transition"
+                offset-x
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="time"
+                    label="Picker in menu"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menu2"
+                  v-model="time"
+                  full-width
+                  @click:minute="$refs.menu.save(time)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn text color="primary" @click="dialog = false">
+          Submit
+        </v-btn>
+      </v-card-actions>
+    </v-dialog>
   </v-row>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
+      dialog: false,
+      time: null,
+      menu2: false,
+      modal2: false,
+
       focus: "",
       type: "month",
       typeToLabel: {
@@ -106,13 +158,15 @@ export default {
       ],
     };
   },
-  mounted() {
-    this.$refs.calendar.checkChange();
+  computed: {
+    ...mapState({
+      schedule: (state) => state.calendar.schedule,
+    }),
   },
   methods: {
     viewDay({ date }) {
+      this.dialog = !this.dialog;
       this.focus = date;
-      this.type = "day";
     },
     getEventColor(event) {
       return event.color;
@@ -144,27 +198,21 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    updateRange({ start, end }) {
+    updateRange() {
       const events = [];
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
-        console.log(allDay);
+      for (let i = 0; i < this.schedule.length; i++) {
+        const name = this.schedule[i].name;
+        const start = new Date(this.schedule[i].start);
+        const end = new Date(this.schedule[i].end);
+        const color = this.schedule[i].color;
+        const timed = this.schedule[i].timed;
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+          name: name,
+          start: start,
+          end: end,
+          color: color,
+          timed: timed,
         });
       }
 
@@ -173,6 +221,10 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+  },
+
+  mounted() {
+    this.$refs.calendar.checkChange();
   },
 };
 </script>
