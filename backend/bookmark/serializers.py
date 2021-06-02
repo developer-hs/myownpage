@@ -17,3 +17,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
         model = BookmarkSites
         fields = ["id", "sites", "locked"]
         read_only_fields = ("id",)
+
+    def validate(self, attrs):
+        print(attrs)
+        return super().validate(attrs)

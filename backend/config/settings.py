@@ -43,6 +43,7 @@ PROJECT_APPS = [
     "bookmark.apps.BookmarkConfig",
     "notepad.apps.NotepadConfig",
     "search.apps.SearchConfig",
+    "schedules.apps.SchedulesConfig",
 
 ]
 

@@ -4,10 +4,10 @@ from . import models
 
 @admin.register(models.InputSite)
 class InputSiteAdmin(admin.ModelAdmin):
-    list_display = ("site_url",)
+    list_display = ("name","site_url",)
 
 
 @admin.register(models.BookmarkSites)
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ("locked",)
+    list_display = ("user",)
     filter_horizontal = ("sites",)
