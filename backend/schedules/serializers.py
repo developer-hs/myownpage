@@ -1,10 +1,12 @@
-from users.serializers import UserSerializer
 from schedules.models import Schedule
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, DateTimeField
+
 
 
 class ScheduleSerializer(ModelSerializer):
-    user = UserSerializer(read_only=True)
+
+    start = DateTimeField(format="%Y-%m-%d %H:%M", input_formats=None)
+    end = DateTimeField(format="%Y-%m-%d %H:%M", input_formats=None)
 
     class Meta:
         model = Schedule
@@ -15,5 +17,5 @@ class ScheduleSerializer(ModelSerializer):
             "end",
             "color",
             "timed",
-            "user",)
-        read_only_field = ("id", "user")
+            )
+        read_only_field = ("id",)

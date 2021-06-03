@@ -1,4 +1,3 @@
-import notepad
 from rest_framework.serializers import ModelSerializer
 from users.serializers import UserSerializer
 from .views import NotePads
