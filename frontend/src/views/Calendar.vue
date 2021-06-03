@@ -27,13 +27,13 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="events"
+          :events="schedule"
           :event-color="getEventColor"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
+          @change="$store.dispatch('calendar/getSchedule')"
         ></v-calendar>
         <v-menu
           v-model="selectedOpen"
@@ -43,7 +43,13 @@
         >
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
-              <v-btn icon>
+              <v-btn
+                icon
+                @click="
+                  dialog = true;
+                  updateDataInit(selectedEvent);
+                "
+              >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -59,6 +65,16 @@
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
+              <v-btn
+                text
+                color="red"
+                @click="
+                  selectedOpen = false;
+                  deleteSchedule(selectedEvent.id);
+                "
+              >
+                Delete
+              </v-btn>
               <v-btn text color="secondary" @click="selectedOpen = false">
                 Cancel
               </v-btn>
@@ -67,26 +83,64 @@
         </v-menu>
       </v-sheet>
     </v-col>
+    <!-- 스케줄 등록 DIALOG -->
     <v-dialog v-model="dialog" max-width="70rem">
       <v-card class="pa-6">
         <v-card-text>
-          <span>메모수정</span>
           <v-row>
-            <v-col cols="11" sm="5">
+            <v-col cols="12" sm="6">
+              <v-text-field
+                v-model="calendarObj.name"
+                label="일정"
+                prepend-icon="mdi-pencil"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="6">
               <v-menu
                 ref="menu"
-                v-model="menu2"
+                v-model="dateMenu"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="time"
+                :return-value.sync="calendarObj.time"
                 transition="scale-transition"
-                offset-x
+                offset-y
                 max-width="290px"
                 min-width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="time"
+                    v-model="dateRangeText"
+                    label="Date Range"
+                    prepend-icon="mdi-calendar-month-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="calendarObj.dates"
+                  range
+                  elevation="15"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-menu
+                ref="menu"
+                v-model="timeMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="calendarObj.time"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="calendarObj.time"
                     label="Picker in menu"
                     prepend-icon="mdi-clock-time-four-outline"
                     readonly
@@ -95,36 +149,79 @@
                   ></v-text-field>
                 </template>
                 <v-time-picker
-                  v-if="menu2"
-                  v-model="time"
+                  v-if="timeMenu"
+                  v-model="calendarObj.time"
                   full-width
-                  @click:minute="$refs.menu.save(time)"
+                  @click:minute="$refs.menu.save(calendarObj.time)"
                 ></v-time-picker>
               </v-menu>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col>
+              <v-checkbox
+                v-model="calendarObj.timed"
+                :label="'시간설정'"
+              ></v-checkbox>
+            </v-col>
+            <v-col>
+              <v-select
+                :items="colors"
+                v-model="calendarObj.color"
+                label="Colors"
+                prepend-icon="mdi-palette"
+              ></v-select>
+            </v-col>
+          </v-row>
         </v-card-text>
+        <v-row justify="end">
+          <v-btn
+            v-if="!updateMode"
+            text
+            color="primary"
+            @click="
+              dialog = false;
+              createSchedule();
+            "
+          >
+            Submit
+          </v-btn>
+          <v-btn
+            v-else
+            text
+            color="primary"
+            @click="
+              dialog = false;
+              updateSchedule();
+            "
+          >
+            Update
+          </v-btn>
+        </v-row>
       </v-card>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-
-        <v-btn text color="primary" @click="dialog = false">
-          Submit
-        </v-btn>
-      </v-card-actions>
     </v-dialog>
   </v-row>
 </template>
 <script>
 import { mapState } from "vuex";
+
 export default {
   data() {
     return {
-      dialog: false,
-      time: null,
-      menu2: false,
-      modal2: false,
+      // calendar schedule form data
+      calendarObj: {
+        name: "",
+        dates: [],
+        time: null,
+        color: "blue",
+        timed: true,
+      },
+      updateMode: false,
+      timeMenu: false,
+      dateMenu: false,
 
+      newDate: "",
+      dialog: false,
       focus: "",
       type: "month",
       typeToLabel: {
@@ -136,7 +233,6 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [],
       colors: [
         "blue",
         "indigo",
@@ -158,15 +254,64 @@ export default {
       ],
     };
   },
+
   computed: {
     ...mapState({
       schedule: (state) => state.calendar.schedule,
     }),
+    dateRangeText() {
+      console.log("dateRangeText");
+      console.log(this.calendarObj.dates);
+
+      return this.calendarObj.dates.join(" ~ ");
+    },
+    nowDate() {
+      return this.$refs.calendar.title;
+    },
+  },
+  mounted() {
+    this.$refs.calendar.checkChange();
   },
   methods: {
+    createSchedule() {
+      if (this.calendarObj.dates.length == 1) {
+        this.calendarObj.dates.push(this.calendarObj.dates[0]);
+      }
+      this.$store.dispatch("calendar/createSchedule", this.calendarObj);
+    },
+    deleteSchedule(pk) {
+      this.$store.dispatch("calendar/deleteSchedule", pk);
+    },
+    updateSchedule() {
+      this.$store.dispatch("calendar/updateSchedule", this.calendarObj);
+    },
+    updateDataInit(schedule) {
+      this.calendarObjInit();
+      this.updateMode = true;
+      const startDate = schedule.start.split(" ");
+      const startDay = startDate[0];
+      const time = startDate[1];
+      const endDay = schedule.end.split(" ")[0];
+      this.calendarObj.dates = [startDay, endDay];
+      this.calendarObj.time = time;
+      this.calendarObj.name = schedule.name;
+      this.calendarObj.color = schedule.color;
+      this.calendarObj.id = schedule.id;
+    },
+    calendarObjInit() {
+      this.calendarObj.name = "";
+      this.calendarObj.dates = [];
+      this.calendarObj.time = null;
+      this.calendarObj.color = "blue";
+      this.calendarObj.timed = true;
+    },
+    // 날짜 클릭시 호출
     viewDay({ date }) {
+      this.updateMode = false;
       this.dialog = !this.dialog;
       this.focus = date;
+      this.calendarObjInit();
+      this.calendarObj.dates.push(date);
     },
     getEventColor(event) {
       return event.color;
@@ -198,33 +343,10 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    updateRange() {
-      const events = [];
 
-      for (let i = 0; i < this.schedule.length; i++) {
-        const name = this.schedule[i].name;
-        const start = new Date(this.schedule[i].start);
-        const end = new Date(this.schedule[i].end);
-        const color = this.schedule[i].color;
-        const timed = this.schedule[i].timed;
-        events.push({
-          name: name,
-          start: start,
-          end: end,
-          color: color,
-          timed: timed,
-        });
-      }
-
-      this.events = events;
-    },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
-  },
-
-  mounted() {
-    this.$refs.calendar.checkChange();
   },
 };
 </script>

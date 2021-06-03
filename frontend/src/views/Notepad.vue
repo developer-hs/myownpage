@@ -64,21 +64,19 @@
                 v-model="updateMemoText"
               ></v-textarea>
             </v-card-text>
+            <v-row justify="end">
+              <v-btn
+                text
+                color="primary"
+                @click="
+                  dialog = false;
+                  onUpdateHandler();
+                "
+              >
+                Submit
+              </v-btn>
+            </v-row>
           </v-card>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn
-              text
-              color="primary"
-              @click="
-                dialog = false;
-                onUpdateHandler();
-              "
-            >
-              Submit
-            </v-btn>
-          </v-card-actions>
         </v-dialog>
       </v-list>
       <div class="pr-3 pl-3">

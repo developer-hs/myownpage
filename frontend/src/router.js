@@ -16,8 +16,8 @@ const onlyAuthUser = (to, from, next) => {
   if (!store.state.auth.token) {
     next({ name: "login" });
   } else {
-    store.dispatch("notepads/getNotepad");
     store.dispatch("auth/getUserInfo");
+    store.dispatch("notepads/getNotepad");
     store.dispatch("bookmark/getBookmark");
     store.dispatch("search/getSearchHistory");
     store.dispatch("settings/getSites");
