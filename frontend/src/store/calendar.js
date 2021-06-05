@@ -10,7 +10,7 @@ export default {
       state.schedule = schedule;
     },
     appendSchedule(state, schedule) {
-      state.schdule = state.schedule.push(schedule);
+      state.schedule = state.schedule.push(schedule);
     },
   },
   actions: {
@@ -43,7 +43,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    updateSchedule({ commit }, schedule) {
+    updateSchedule({ dispatch }, schedule) {
       console.log(schedule);
       callApi(
         "put",
@@ -52,8 +52,9 @@ export default {
         store.state.auth.token
       )
         .then((response) => {
-          console.log(response);
-          commit;
+          if (response.status === 200) {
+            dispatch("getSchedule");
+          }
         })
         .catch((error) => console.log(error));
     },
