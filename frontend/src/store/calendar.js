@@ -7,10 +7,12 @@ export default {
   },
   mutations: {
     setSchedule(state, schedule) {
+      for (let i = 0; i < schedule.length; i++) {
+        schedule[i].start = new Date(schedule[i].start);
+        schedule[i].end = new Date(schedule[i].end);
+      }
+      console.log(schedule);
       state.schedule = schedule;
-    },
-    appendSchedule(state, schedule) {
-      state.schedule = state.schedule.push(schedule);
     },
   },
   actions: {
@@ -25,11 +27,11 @@ export default {
           console.log(error);
         });
     },
-    createSchedule({ commit }, schdule) {
-      callApi("post", "/schedule/", schdule, store.state.auth.token)
+    createSchedule({ dispatch }, schedule) {
+      callApi("post", "/schedule/", schedule, store.state.auth.token)
         .then((response) => {
           if (response.status === 201) {
-            commit("appendSchedule", response.data);
+            dispatch("getSchedule");
           }
         })
         .catch((error) => console.log(error));

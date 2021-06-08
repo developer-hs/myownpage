@@ -140,6 +140,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
+                    :disabled="!timed"
                     v-model="calendarObj.time"
                     label="Picker in menu"
                     prepend-icon="mdi-clock-time-four-outline"
@@ -204,8 +205,9 @@
 </template>
 <script>
 import { mapState } from "vuex";
-
+import { DateConversion } from "./mixins/DateConversion";
 export default {
+  mixins: [DateConversion],
   data() {
     return {
       // calendar schedule form data
@@ -259,10 +261,11 @@ export default {
     ...mapState({
       schedule: (state) => state.calendar.schedule,
     }),
+    timed() {
+      return this.calendarObj.timed;
+    },
     dateRangeText() {
-      console.log("dateRangeText");
       console.log(this.calendarObj.dates);
-
       return this.calendarObj.dates.join(" ~ ");
     },
     nowDate() {
@@ -288,12 +291,22 @@ export default {
     updateDataInit(schedule) {
       this.calendarObjInit();
       this.updateMode = true;
-      const startDate = schedule.start.split(" ");
-      const startDay = startDate[0];
-      const time = startDate[1];
-      const endDay = schedule.end.split(" ")[0];
-      this.calendarObj.dates = [startDay, endDay];
-      this.calendarObj.time = time;
+      const startYear = schedule.start.getFullYear();
+      const startMonth = this.monthConversion(schedule.start.getMonth());
+      const startDate = this.dateConversion(schedule.start.getDate());
+      const endYear = schedule.end.getFullYear();
+      const endMonth = this.monthConversion(schedule.end.getMonth());
+      const endDate = this.dateConversion(schedule.end.getDate());
+
+      const hours = schedule.start.getHours();
+      const minute = schedule.start.getMinutes();
+
+      const fullStartDay = `${startYear}-${startMonth}-${startDate}`;
+      const fullEndDay = `${endYear}-${endMonth}-${endDate}`;
+      const fullTime = `${hours}:${minute}`;
+
+      this.calendarObj.dates = [fullStartDay, fullEndDay];
+      this.calendarObj.time = fullTime;
       this.calendarObj.name = schedule.name;
       this.calendarObj.color = schedule.color;
       this.calendarObj.id = schedule.id;

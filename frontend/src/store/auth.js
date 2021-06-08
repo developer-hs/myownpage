@@ -50,7 +50,16 @@ export default {
       commit("logOut");
       window.location.reload();
     },
-    getUserInfo({ state, commit }) {
+    tokenVerify({ state, commit }) {
+      callApi("post", "/token/verify/", { token: state.token }, null)
+        .then((response) => console.log(response))
+        .catch((error) => {
+          console.log(error.response.status);
+          commit("logOut");
+        });
+    },
+    getUserInfo({ state, commit, dispatch }) {
+      dispatch("tokenVerify");
       callApi("post", "/users/user_info", null, state.token)
         .then((response) => {
           if (response.status === 200) {

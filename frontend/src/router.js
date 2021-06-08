@@ -25,7 +25,7 @@ const onlyAuthUser = (to, from, next) => {
 
     setTimeout(() => {
       next();
-    }, 300);
+    }, 500);
   }
 };
 Vue.use(VueRouter);
