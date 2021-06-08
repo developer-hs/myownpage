@@ -206,6 +206,7 @@
 <script>
 import { mapState } from "vuex";
 import { DateConversion } from "./mixins/DateConversion";
+import { findObjectIndex } from "../api/objectMethod";
 export default {
   mixins: [DateConversion],
   data() {
@@ -214,7 +215,7 @@ export default {
       calendarObj: {
         name: "",
         dates: [],
-        time: null,
+        time: "",
         color: "blue",
         timed: true,
       },
@@ -265,7 +266,6 @@ export default {
       return this.calendarObj.timed;
     },
     dateRangeText() {
-      console.log(this.calendarObj.dates);
       return this.calendarObj.dates.join(" ~ ");
     },
     nowDate() {
@@ -289,6 +289,9 @@ export default {
       this.$store.dispatch("calendar/updateSchedule", this.calendarObj);
     },
     updateDataInit(schedule) {
+      const index = findObjectIndex(this.schedule, schedule.id);
+      schedule = this.schedule[index];
+
       this.calendarObjInit();
       this.updateMode = true;
       const startYear = schedule.start.getFullYear();
@@ -298,8 +301,8 @@ export default {
       const endMonth = this.monthConversion(schedule.end.getMonth());
       const endDate = this.dateConversion(schedule.end.getDate());
 
-      const hours = schedule.start.getHours();
-      const minute = schedule.start.getMinutes();
+      const hours = this.hoursConversion(schedule.start.getHours());
+      const minute = this.minuteConversion(schedule.start.getMinutes());
 
       const fullStartDay = `${startYear}-${startMonth}-${startDate}`;
       const fullEndDay = `${endYear}-${endMonth}-${endDate}`;
@@ -307,6 +310,7 @@ export default {
 
       this.calendarObj.dates = [fullStartDay, fullEndDay];
       this.calendarObj.time = fullTime;
+      this.calendarObj.timed = schedule.timed;
       this.calendarObj.name = schedule.name;
       this.calendarObj.color = schedule.color;
       this.calendarObj.id = schedule.id;
@@ -314,7 +318,7 @@ export default {
     calendarObjInit() {
       this.calendarObj.name = "";
       this.calendarObj.dates = [];
-      this.calendarObj.time = null;
+      this.calendarObj.time = "";
       this.calendarObj.color = "blue";
       this.calendarObj.timed = true;
     },

@@ -22,7 +22,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text>Cancel</v-btn>
+              <v-btn text @click="$router.push({name:'home'})">Cancel</v-btn>
               <v-btn
                 @click="$store.dispatch('settings/bookmarkSetting')"
                 text

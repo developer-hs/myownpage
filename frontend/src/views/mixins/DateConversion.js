@@ -8,10 +8,19 @@ export const DateConversion = {
       }
     },
     dateConversion(date) {
-      console.log(date);
       if (String(date).length === 1) {
         return `0${date}`;
       } else return date;
+    },
+    hoursConversion(hours) {
+      if (String(hours).length === 1) {
+        return `0${hours}`;
+      } else return hours;
+    },
+    minuteConversion(minute) {
+      if (String(minute).length === 1) {
+        return `0${minute}`;
+      } else return minute;
     },
   },
 };

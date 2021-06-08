@@ -11,9 +11,6 @@ export default {
     setSearchHistory(state, searchHistory) {
       state.searchHistory = searchHistory;
     },
-    addSearchHistory(state, searchHistory) {
-      state.searchHistory.unshift(searchHistory);
-    },
     removeSearchHistory(state, pk) {
       for (let i = 0; i < state.searchHistory.length; i++) {
         if (state.searchHistory[i].id === pk) {
@@ -34,7 +31,7 @@ export default {
           console.log(error);
         });
     },
-    createSearchHistory({ commit }, searchTerm) {
+    createSearchHistory({ dispatch }, searchTerm) {
       callApi(
         "post",
         "/search/history/",
@@ -43,7 +40,7 @@ export default {
       )
         .then((response) => {
           if (response.status === 201) {
-            commit("addSearchHistory", response.data);
+            dispatch("getSearchHistory");
           }
         })
         .catch((error) => {

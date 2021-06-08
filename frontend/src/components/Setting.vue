@@ -52,7 +52,7 @@ export default {
   components: { MainSetting, BookmarkSetting },
   data() {
     return {
-      selectMenu: "Bookmark Setting",
+      selectMenu: "Main Setting",
       settingsMenu: [
         { title: "Main Setting", icon: "mdi-view-dashboard" },
         { title: "Bookmark Setting", icon: "mdi-image" },

@@ -1,4 +1,5 @@
 import callApi from "../api/callApi";
+import { findObjectIndex } from "../api/objectMethod";
 import store from "../store";
 export default {
   namespaced: true,
@@ -11,8 +12,11 @@ export default {
         schedule[i].start = new Date(schedule[i].start);
         schedule[i].end = new Date(schedule[i].end);
       }
-      console.log(schedule);
       state.schedule = schedule;
+    },
+    updateSchedule(state, schedule) {
+      const index = findObjectIndex(state.schedule, schedule.id);
+      state.schedule[index] = schedule;
     },
   },
   actions: {
@@ -20,6 +24,7 @@ export default {
       callApi("get", "/schedule/", null, store.state.auth.token)
         .then((response) => {
           if (response.status === 200) {
+            console.log(response.data);
             commit("setSchedule", response.data);
           }
         })
@@ -45,8 +50,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    updateSchedule({ dispatch }, schedule) {
-      console.log(schedule);
+    updateSchedule({ state, dispatch }, schedule) {
       callApi(
         "put",
         `/schedule/${schedule.id}/`,
@@ -56,6 +60,7 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             dispatch("getSchedule");
+            console.log(state.schedule);
           }
         })
         .catch((error) => console.log(error));

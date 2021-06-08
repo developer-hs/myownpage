@@ -55,7 +55,7 @@
               <v-btn color="red" text @click="logOut">LogOut</v-btn>
 
               <v-spacer></v-spacer>
-              <v-btn text>Cancel</v-btn>
+              <v-btn text @click="$router.push({name : 'home'})">Cancel</v-btn>
               <v-btn text color="primary">Submit</v-btn>
             </v-card-actions>
           </v-card>
