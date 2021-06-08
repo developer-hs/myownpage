@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('bookmark', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('search', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bookmarksites',
+            model_name='searchhistory',
             name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='bookmark', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='search_history', to=settings.AUTH_USER_MODEL),
         ),
     ]
