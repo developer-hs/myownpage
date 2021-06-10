@@ -1,20 +1,33 @@
 <template>
-  <v-flex>
-    <div class="bookmark-bar text-xs-center justify-center">
-      <v-btn
-        fab
-        depressed
-        text
-        class="mr-5 font-weight-medium"
-        small
-        :key="index"
-        v-for="(site, index) in bookmark.sites"
-        @click="siteLocked(site.name)"
-      >
-        {{ site.name }}
-      </v-btn>
-    </div>
-  </v-flex>
+  <v-container>
+    <v-row>
+      <v-col cols="11">
+        <div class="bookmark-bar text-xs-center">
+          <v-btn
+            depressed
+            text
+            class="mr-5 font-weight-medium"
+            small
+            :key="index"
+            v-for="(site, index) in bookmark.sites"
+            @click="siteLocked(site.name)"
+          >
+            {{ site.name }}
+          </v-btn>
+        </div>
+      </v-col>
+      <v-col cols="1">
+        <v-btn
+          icon
+          fab
+          depressed
+          small
+          @click="$router.push({ name: 'setting' })"
+          ><v-icon>mdi-cog</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
@@ -24,8 +37,8 @@ export default {
   },
   computed: {
     ...mapState({
-      bookmark: (state) => state.bookmark.bookmark,
-    }),
+      bookmark: state => state.bookmark.bookmark
+    })
   },
   methods: {
     ...mapActions("bookmark", ["siteLocked"]),
@@ -47,12 +60,12 @@ export default {
           el_Bookmark[i].classList.remove(preSiteName.toLowerCase());
         }
       }
-    },
+    }
   },
 
   mounted() {
     this.paintBookmark();
-  },
+  }
 };
 </script>
 <style scoped>
@@ -65,7 +78,16 @@ export default {
 .google {
   color: #c23616;
 }
+.yahoo {
+  color: #6003d2;
+}
 .missha {
   color: #686de0;
+}
+.bing {
+  color: #3498db;
+}
+.duckduckgo {
+  color: #fdd309;
 }
 </style>

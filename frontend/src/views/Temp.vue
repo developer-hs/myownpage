@@ -24,7 +24,7 @@
     </v-simple-table>
     <v-container fluid>
       <v-row align="center">
-        <v-col class="d-flex" cols="12" sm="6">
+        <v-col cols="12" sm="6">
           <v-select :items="items" label="Standard"></v-select>
         </v-col>
       </v-row>
@@ -41,24 +41,24 @@ export default {
     options: [
       { v: "S", t: "Seoul" },
       { v: "J", t: "Jeju" },
-      { v: "B", t: "Busan" },
+      { v: "B", t: "Busan" }
     ],
     region: "B",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
-    tableShow: true,
+    tableShow: true
   }),
   computed: {
     ...mapGetters({
       change1: "function1",
-      change2: "function2 ",
+      change2: "function2 "
     }),
     // ...mapGetters(["function1", "function2"]),
-    ...mapState(["state_key"]),
+    ...mapState(["state_key"])
   },
   watch: {
     input() {
       console.log(this.input1);
-    },
+    }
   },
 
   methods: {
@@ -78,7 +78,7 @@ export default {
     },
     tableToggle() {
       this.tableShow = !this.tableShow;
-    },
+    }
   },
   beforeCreate() {
     console.log("beforeCreate");
@@ -103,7 +103,7 @@ export default {
   },
   destroyed() {
     console.log("destroyed");
-  },
+  }
 };
 </script>
 

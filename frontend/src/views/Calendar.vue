@@ -217,7 +217,7 @@ export default {
         dates: [],
         time: "",
         color: "blue",
-        timed: true,
+        timed: true
       },
       updateMode: false,
       timeMenu: false,
@@ -231,7 +231,7 @@ export default {
         month: "Month",
         week: "Week",
         day: "Day",
-        "4day": "4 Days",
+        "4day": "4 Days"
       },
       selectedEvent: {},
       selectedElement: null,
@@ -243,7 +243,7 @@ export default {
         "cyan",
         "green",
         "orange",
-        "grey darken-1",
+        "grey darken-1"
       ],
       names: [
         "Meeting",
@@ -253,14 +253,14 @@ export default {
         "Event",
         "Birthday",
         "Conference",
-        "Party",
-      ],
+        "Party"
+      ]
     };
   },
 
   computed: {
     ...mapState({
-      schedule: (state) => state.calendar.schedule,
+      schedule: state => state.calendar.schedule
     }),
     timed() {
       return this.calendarObj.timed;
@@ -270,7 +270,7 @@ export default {
     },
     nowDate() {
       return this.$refs.calendar.title;
-    },
+    }
   },
   mounted() {
     this.$refs.calendar.checkChange();
@@ -363,7 +363,7 @@ export default {
 
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-  },
+    }
+  }
 };
 </script>

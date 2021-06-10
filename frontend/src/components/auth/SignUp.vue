@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-container fill-height mb-16 style="max-width:850px">
-      <v-layout align-center>
-        <v-flex xs12>
+      <v-row align-center>
+        <v-col cols="12">
           <v-card>
             <div class="pa-3">
               <v-form ref="form" v-model="valid" lazy-validation>
@@ -54,8 +54,8 @@
               </v-form>
             </div>
           </v-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-app>
 </template>
@@ -67,18 +67,18 @@ export default {
       valid: true,
       username: "",
       nameRules: [
-        (v) => !!v || "Name is required",
-        (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+        v => !!v || "Name is required",
+        v => (v && v.length <= 10) || "Name must be less than 10 characters"
       ],
       email: "",
       emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
       password: "",
       passwordShow: false,
       firstName: "",
-      lastName: "",
+      lastName: ""
     };
   },
 
@@ -89,24 +89,24 @@ export default {
         email: this.email,
         password: this.password,
         first_name: this.firstName,
-        last_name: this.lastName,
+        last_name: this.lastName
       })
-        .then((response) => {
+        .then(response => {
           if (response.status === 201) {
             localStorage.setItem("search_bookmark", "NAVER");
           }
         })
-        .catch((error) => {
+        .catch(error => {
           if (error.response.status == 400) {
             alert("동일한 이메일이 존재합니다");
           }
         });
-    },
+    }
   },
   created() {
     if (this.$store.state.auth.token) {
       this.$router.push({ name: "home" });
     }
-  },
+  }
 };
 </script>

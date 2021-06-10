@@ -19,9 +19,7 @@
 
 <script>
 export default {
-  data: () => ({
-    drawer: null,
-  }),
+  data: () => ({})
 };
 </script>
 

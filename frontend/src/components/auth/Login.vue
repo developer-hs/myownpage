@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-container fill-height mb-16 style="max-width:850px">
-      <v-layout align-center>
-        <v-flex xs12>
+      <v-row align="center">
+        <v-col cols="12">
           <v-alert class="mb-3" :value="isLoginError" type="error">
             아이디와 비밀번호를 확인해주세요.
           </v-alert>
@@ -53,8 +53,8 @@
               </v-form>
             </div>
           </v-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-app>
 </template>
@@ -68,26 +68,26 @@ export default {
     return {
       loginObj: {
         username: "admin",
-        password: "admin",
+        password: "admin"
       },
       valid: true,
       nameRules: [
-        (v) => !!v || "Name is required",
-        (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
+        v => !!v || "Name is required",
+        v => (v && v.length <= 10) || "Name must be less than 10 characters"
       ],
       passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) => (v && v.length >= 3) || "Passwrod must ba less than 3 integer",
+        v => !!v || "Password is required",
+        v => (v && v.length >= 3) || "Passwrod must ba less than 3 integer"
       ],
       passwordShow: "",
-      isError: false,
+      isError: false
     };
   },
   computed: {
     ...mapState({
-      isLoginError: (state) => state.auth.isLoginError,
-      isLoggedIn: (state) => state.auth.isLoggedIn,
-    }),
+      isLoginError: state => state.auth.isLoginError,
+      isLoggedIn: state => state.auth.isLoggedIn
+    })
   },
   methods: {
     ...mapActions("auth", ["logIn"]),
@@ -103,8 +103,8 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
