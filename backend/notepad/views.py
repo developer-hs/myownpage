@@ -53,9 +53,3 @@ class NotepadsAPIView(APIView):
                 serializer_memo = NotePadSerializer(memo).data
                 return Response(serializer_memo, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(["POST"])
-@permission_classes((IsAuthenticated, IsSelf))
-@authentication_classes((JSONWebTokenAuthentication,))
-def memo_status_toggle(self, request):
-    print(request.user)

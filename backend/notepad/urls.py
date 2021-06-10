@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     path("memo", views.NotepadsAPIView.as_view()),
     path("memo/<int:pk>/", views.NotepadsAPIView.as_view()),
-    path("memo/<int:pk>/status", views.memo_status_toggle)
+
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)
