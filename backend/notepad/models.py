@@ -5,3 +5,6 @@ class NotePads(TimestampedModel):
     memo = models.TextField(blank=True)
     user = models.ForeignKey("users.User" , related_name="notepads" ,on_delete=models.CASCADE)
     done = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["done","datetime_update"]

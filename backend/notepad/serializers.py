@@ -4,7 +4,6 @@ from .views import NotePads
 
 
 class NotePadSerializer(ModelSerializer):
-    done = BooleanField(read_only=True)
 
     class Meta:
         model = NotePads

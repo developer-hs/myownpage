@@ -5,13 +5,13 @@ from django.core.exceptions import RequestDataTooBig
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import notepad
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import NotePads
 from .serializers import NotePadSerializer
+from users.permission import IsSelf
 
 
 class NotepadsAPIView(APIView):
@@ -41,6 +41,7 @@ class NotepadsAPIView(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
+        print(request.data)
         memo = NotePads.objects.get(pk=pk)
         if memo is not None:
             if memo.user != request.user:
@@ -52,3 +53,9 @@ class NotepadsAPIView(APIView):
                 serializer_memo = NotePadSerializer(memo).data
                 return Response(serializer_memo, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+@permission_classes((IsAuthenticated, IsSelf))
+@authentication_classes((JSONWebTokenAuthentication,))
+def memo_status_toggle(self, request):
+    print(request.user)
