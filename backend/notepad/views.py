@@ -1,18 +1,12 @@
-from decimal import ConversionSyntax
-from functools import partial
-from django.contrib.auth import authenticate
-from django.core.exceptions import RequestDataTooBig
-from rest_framework import serializers, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import NotePads
 from .serializers import NotePadSerializer
 from users.permission import IsSelf
-
 
 class NotepadsAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -53,3 +47,4 @@ class NotepadsAPIView(APIView):
                 serializer_memo = NotePadSerializer(memo).data
                 return Response(serializer_memo, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
