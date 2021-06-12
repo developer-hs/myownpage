@@ -6,16 +6,37 @@ from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import NotePads
 from .serializers import NotePadSerializer
+from rest_framework.pagination import PageNumberPagination
 from users.permission import IsSelf
+import math
+
+
+class OwnPagination(PageNumberPagination):
+    page_size = 6
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'page_size': math.ceil(self.page.paginator.count / self.page_size),
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
 
 class NotepadsAPIView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
 
     def get(self, request):
-        memos = NotePads.objects.filter(user=request.user)
-        serializer = NotePadSerializer(memos, many=True)
-        return Response(serializer.data)
+        paginator = OwnPagination()
+        notepads = NotePads.objects.all()
+        result = paginator.paginate_queryset(notepads, request)
+        serializer = NotePadSerializer(result, many=True, context={
+                                       "request": request}).data
+        return paginator.get_paginated_response(serializer)
 
     def post(self, request):
         serializer = NotePadSerializer(data=request.data)
@@ -47,4 +68,3 @@ class NotepadsAPIView(APIView):
                 serializer_memo = NotePadSerializer(memo).data
                 return Response(serializer_memo, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
