@@ -3,7 +3,7 @@ import store from "../store";
 export default {
   namespaced: true,
   state: {
-    bookmark: {},
+    bookmark: {}
   },
   getters: {},
   mutations: {
@@ -12,15 +12,15 @@ export default {
     },
     siteLocked(state, siteName) {
       state.bookmark.locked = siteName;
-    },
+    }
   },
   actions: {
     getBookmark({ commit }) {
       callApi("get", "/bookmark/", null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           commit("setBookmark", response.data);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -31,14 +31,14 @@ export default {
         { locked: siteName },
         store.state.auth.token
       )
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             commit("siteLocked", siteName);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
-    },
-  },
+    }
+  }
 };

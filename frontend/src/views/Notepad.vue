@@ -146,6 +146,7 @@ export default {
 
       updateNote: {},
       notepad: this.$store.state.notepads.notepad,
+      memoCount: this.$store.state.notepads.totalMemoCount,
       dialog: false
     };
   },
@@ -157,7 +158,7 @@ export default {
       return (this.completedTasks / this.notepad.length) * 100;
     },
     remainingTasks() {
-      return this.notepad.length - this.completedTasks;
+      return this.memoCount - this.completedTasks;
     }
   },
   methods: {

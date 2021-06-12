@@ -3,12 +3,19 @@ import callApi from "../api/callApi";
 export default {
   namespaced: true,
   state: {
-    notepad: {}
+    notepad: {},
+    totalMemoCount : "",
+    next_page : "",
+    prev_page : ""
   },
   getters: {},
   mutations: {
-    setNotepad(state, notepad) {
-      state.notepad = notepad;
+    setNotepad(state, paginator) {
+      console.log(paginator.count)
+      state.notepad = paginator.results;
+      state.next_page = paginator.links.next
+      state.totalMemoCount = paginator.count
+      console.log(state.totalMemoCount)
     },
     appendMemo(state, memo) {
       state.notepad.unshift(memo);
@@ -22,8 +29,8 @@ export default {
     }
   },
   actions: {
-    getNotepad({ commit }) {
-      callApi("get", "/notepad/memo", null, store.state.auth.token)
+    getNotepad({ commit }, page = 1) {
+      callApi("get", `/notepad/memo?page=${page}`, null, store.state.auth.token)
         .then(response => {
           commit("setNotepad", response.data);
         })
