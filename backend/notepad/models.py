@@ -7,4 +7,4 @@ class NotePads(TimestampedModel):
     done = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["done","datetime_update"]
+        ordering = ["done","-datetime_update"]

@@ -15,6 +15,8 @@ class OwnPagination(PageNumberPagination):
     page_size = 6
 
     def get_paginated_response(self, data):
+        done_count = len(NotePads.objects.filter(user = self.request.user).filter(done=True))
+        print(done_count)
         return Response({
             'links': {
                 'next': self.get_next_link(),
@@ -22,6 +24,7 @@ class OwnPagination(PageNumberPagination):
             },
             'page_size': math.ceil(self.page.paginator.count / self.page_size),
             'count': self.page.paginator.count,
+            'done_count' : done_count,
             'results': data
         })
 
@@ -56,7 +59,6 @@ class NotepadsAPIView(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
-        print(request.data)
         memo = NotePads.objects.get(pk=pk)
         if memo is not None:
             if memo.user != request.user:
