@@ -24,6 +24,7 @@
       </v-sheet>
       <v-sheet height="600">
         <v-calendar
+          class="rounded-lg"
           ref="calendar"
           v-model="focus"
           color="primary"

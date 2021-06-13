@@ -4,18 +4,24 @@ export default {
   namespaced: true,
   state: {
     notepad: {},
-    totalMemoCount : "",
-    next_page : "",
-    prev_page : ""
+    totalMemoCount: "",
+    nextPage: "",
+    prevPage: "",
+    pageSize: 1,
+    doneCount: 0
   },
-  getters: {},
+  getters: {
+    getTotalCount(state) {
+      return state.totalMemoCount;
+    }
+  },
   mutations: {
     setNotepad(state, paginator) {
-      console.log(paginator.count)
       state.notepad = paginator.results;
-      state.next_page = paginator.links.next
-      state.totalMemoCount = paginator.count
-      console.log(state.totalMemoCount)
+      state.nextPage = paginator.links.next;
+      state.totalMemoCount = paginator.count;
+      state.pageSize = paginator.page_size;
+      state.doneCount = paginator.done_count;
     },
     appendMemo(state, memo) {
       state.notepad.unshift(memo);
@@ -38,33 +44,38 @@ export default {
           console.log(error);
         });
     },
-    createMemo({ commit }, memo) {
+    createMemo({ dispatch }, memo) {
       callApi("post", "/notepad/memo", memo, store.state.auth.token)
         .then(response => {
           if (response.status == 201) {
-            commit("appendMemo", response.data);
+            dispatch("getNotepad");
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    removeMemo({ commit }, pk) {
+    removeMemo({ dispatch }, pk) {
       callApi("delete", `/notepad/memo/${pk}/`, null, store.state.auth.token)
         .then(response => {
           if (response.status === 200) {
-            commit("removeMemo", pk);
+            dispatch("getNotepad");
           }
         })
         .catch(error => {
           console.log(console.log(error));
         });
     },
-    updateMemo(state, memo) {
-      callApi("put", `/notepad/memo/${memo.id}/`, memo, store.state.auth.token)
+    updateMemo({ dispatch }, obj) {
+      callApi(
+        "put",
+        `/notepad/memo/${obj.updateNote.id}/`,
+        obj.updateNote,
+        store.state.auth.token
+      )
         .then(response => {
           if (response.status === 200) {
-            console.log(response);
+            dispatch("getNotepad", obj.page);
           }
         })
         .catch(error => console.log(error));

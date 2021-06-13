@@ -16,7 +16,7 @@
 </template>
 <script>
 import Bookmark from "../views/Bookmark";
-import Notepad from "../views/Notepad";
+import Notepad from "./Notepad.vue";
 import SearchBar from "../views/SearchBar";
 import { mapActions } from "vuex";
 import Calendar from "../views/Calendar";

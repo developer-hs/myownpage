@@ -4,7 +4,7 @@ import store from "../store";
 export default {
   namespaced: true,
   state: {
-    schedule: {},
+    schedule: {}
   },
   mutations: {
     setSchedule(state, schedule) {
@@ -17,38 +17,38 @@ export default {
     updateSchedule(state, schedule) {
       const index = findObjectIndex(state.schedule, schedule.id);
       state.schedule[index] = schedule;
-    },
+    }
   },
   actions: {
     getSchedule({ commit }) {
       callApi("get", "/schedule/", null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             console.log(response.data);
             commit("setSchedule", response.data);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
     createSchedule({ dispatch }, schedule) {
       callApi("post", "/schedule/", schedule, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 201) {
             dispatch("getSchedule");
           }
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
     deleteSchedule({ dispatch }, pk) {
       callApi("delete", `/schedule/${pk}/`, null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             dispatch("getSchedule");
           }
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
     updateSchedule({ state, dispatch }, schedule) {
       callApi(
@@ -57,13 +57,16 @@ export default {
         schedule,
         store.state.auth.token
       )
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             dispatch("getSchedule");
             console.log(state.schedule);
           }
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
-  },
+    Scheduler() {
+      callApi("");
+    }
+  }
 };
