@@ -1,195 +1,94 @@
 <template>
-  <div>
-    <bubble-menu
-      class="bubble-menu"
-      :tippy-options="{ duration: 100 }"
-      :editor="editor"
-      v-if="editor"
-    >
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleBold()
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('bold') }"
-      >
-        Bold
-      </button>
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleItalic()
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('italic') }"
-      >
-        Italic
-      </button>
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleStrike()
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('strike') }"
-      >
-        Strike
-      </button>
-    </bubble-menu>
-
-    <floating-menu
-      class="floating-menu"
-      :tippy-options="{ duration: 100 }"
-      :editor="editor"
-      v-if="editor"
-    >
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleHeading({ level: 1 })
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
-      >
-        H1
-      </button>
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleHeading({ level: 2 })
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
-      >
-        H2
-      </button>
-      <button
-        @click="
-          editor
-            .chain()
-            .focus()
-            .toggleBulletList()
-            .run()
-        "
-        :class="{ 'is-active': editor.isActive('bulletList') }"
-      >
-        Bullet List
-      </button>
-    </floating-menu>
-
-    <editor-content :editor="editor" />
-  </div>
+  <v-card rounded="lg" elevation="1" height="600" class="pa-3" max-width="600">
+    <v-btn @click="dialog = true" color="pink" fab dark small absolute top left>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <v-row>
+      <v-col cols="6" :key="i" v-for="i in 3">
+        <v-card height="230px"
+          ><v-img
+            lazy-src="https://picsum.photos/id/11/10/6"
+            height="230"
+            max-width="248.25"
+            src="https://picsum.photos/id/11/500/300"
+          >
+          </v-img
+        ></v-card>
+      </v-col>
+    </v-row>
+    <v-dialog v-model="dialog" max-width="70rem">
+      <v-card class="pa-6">
+        <tiptap-vuetify
+          v-model="content"
+          :extensions="extensions"
+          placeholder="Write something …"
+        />
+        <v-row justify="end">
+          <v-btn text color="primary" @click="dialog = false">
+            Submit
+          </v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+  </v-card>
 </template>
 <script>
 import {
-  Editor,
-  EditorContent,
-  BubbleMenu,
-  FloatingMenu
+  TiptapVuetify,
+  Heading,
+  Bold,
+  Italic,
+  Strike,
+  Underline,
+  Code,
+  Paragraph,
+  BulletList,
+  OrderedList,
+  ListItem,
+  Link,
+  Blockquote,
+  HardBreak,
+  HorizontalRule,
+  History,
+  Image
 } from "tiptap-vuetify";
-import StarterKit from "@tiptap/starter-kit";
-export default {
-  components: {
-    EditorContent,
-    BubbleMenu,
-    FloatingMenu
-  },
 
+export default {
+  components: { TiptapVuetify },
   data() {
     return {
-      editor: null
-    };
-  },
-
-  mounted() {
-    this.editor = new Editor({
-      extensions: [StarterKit],
+      extensions: [
+        History,
+        Blockquote,
+        Link,
+        Underline,
+        Strike,
+        Italic,
+        ListItem,
+        BulletList,
+        OrderedList,
+        [
+          Heading,
+          {
+            options: {
+              levels: [1, 2, 3]
+            }
+          }
+        ],
+        Bold,
+        Code,
+        HorizontalRule,
+        Paragraph,
+        HardBreak,
+        Image
+      ],
+      // starting editor's content
       content: `
-        <p>
-          Try to select <em>this text</em> to see what we call the bubble menu.
-        </p>
-        <p>
-          Neat, isn’t it? Add an empty paragraph to see the floating menu.
-        </p>
-      `
-    });
-  },
-
-  beforeDestroy() {
-    this.editor.destroy();
+      <h1>Yay Headlines!</h1>
+      <p>All these <strong>cool tags</strong> are working now.</p>
+    `,
+      dialog: false
+    };
   }
 };
 </script>
-
-<style lang="scss">
-/* Basic editor styles */
-.ProseMirror {
-  > * + * {
-    margin-top: 0.75em;
-  }
-
-  ul,
-  ol {
-    padding: 0 1rem;
-  }
-
-  blockquote {
-    padding-left: 1rem;
-    border-left: 2px solid rgba(#0d0d0d, 0.1);
-  }
-}
-
-.bubble-menu {
-  display: flex;
-  background-color: #0d0d0d;
-  padding: 0.2rem;
-  border-radius: 0.5rem;
-
-  button {
-    border: none;
-    background: none;
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 0 0.2rem;
-    opacity: 0.6;
-
-    &:hover,
-    &.is-active {
-      opacity: 1;
-    }
-  }
-}
-
-.floating-menu {
-  display: flex;
-  background-color: #0d0d0d10;
-  padding: 0.2rem;
-  border-radius: 0.5rem;
-
-  button {
-    border: none;
-    background: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 0 0.2rem;
-    opacity: 0.6;
-
-    &:hover,
-    &.is-active {
-      opacity: 1;
-    }
-  }
-}
-</style>
