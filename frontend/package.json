@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
+    "tiptap-vuetify": "^2.24.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
     "vuetify": "^2.4.0",
@@ -30,6 +31,7 @@
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.0",
     "vue-template-compiler": "^2.6.11",
+    "vue2-dropzone": "^3.6.0",
     "vuetify-loader": "^1.7.0"
   },
   "eslintConfig": {
