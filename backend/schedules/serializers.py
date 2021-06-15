@@ -1,5 +1,5 @@
 from schedules.models import Schedule
-from rest_framework.serializers import ModelSerializer, DateTimeField
+from rest_framework.serializers import ModelSerializer, DateTimeField, CharField
 
 
 class ScheduleSerializer(ModelSerializer):
@@ -16,5 +16,6 @@ class ScheduleSerializer(ModelSerializer):
             "end",
             "color",
             "timed",
+            "detail",
         )
         read_only_field = ("id",)

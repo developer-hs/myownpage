@@ -1,3 +1,4 @@
+from decimal import ConversionSyntax
 from django.db import connections
 from django.db.models.query import FlatValuesListIterable
 from rest_framework import status
@@ -15,14 +16,14 @@ class ScheduleAPIView(APIView):
     authentication_classes = [JSONWebTokenAuthentication]
 
     def schedule_obj_init(self):
-        print(self.request.data)
         name = self.request.data.get("name")
         color = self.request.data.get("color")
         timed = self.request.data.get("timed")
         dates = self.request.data.get("dates")
         time = self.request.data.get("time")
-
-        schedule_obj = {"name": name, "color": color, "timed": timed}
+        detail = self.request.data.get("detail")
+        schedule_obj = {"name": name, "color": color,
+                        "timed": timed, "detail": detail}
         self.date_conversion(time, dates, schedule_obj)
         return schedule_obj
 
@@ -30,7 +31,6 @@ class ScheduleAPIView(APIView):
         first_check = True
 
         hours, minute = 0, 0
-        print(time)
         if schedule_obj["timed"]:
             hours, minute = time.split(":")
         for date in dates:
@@ -58,10 +58,9 @@ class ScheduleAPIView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-
         schedule_obj = self.schedule_obj_init()
-
         serializer = ScheduleSerializer(data=schedule_obj)
+        print(serializer)
         if serializer.is_valid():
             new_schedule = serializer.save(user=request.user)
             new_schedule_serializer = ScheduleSerializer(new_schedule).data
