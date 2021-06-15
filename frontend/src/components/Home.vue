@@ -1,6 +1,17 @@
 <template>
   <v-app v-if="this.$store.state.auth.token">
-    <bookmark />
+    <v-col cols="12">
+      <v-btn
+        style="position:absolute"
+        icon
+        fab
+        depressed
+        small
+        @click="$router.push({ name: 'setting' })"
+        ><v-icon>mdi-cog</v-icon>
+      </v-btn>
+      <bookmark />
+    </v-col>
     <search-bar />
     <v-container>
       <v-row>

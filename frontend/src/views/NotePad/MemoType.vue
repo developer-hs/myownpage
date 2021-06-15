@@ -16,12 +16,19 @@
         ></v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" max-width="70rem">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
       <v-card class="pa-6">
         <tiptap-vuetify
           v-model="content"
           :extensions="extensions"
+          :toolbar-attributes="{ color: 'brown lighten-3' }"
           placeholder="Write something …"
+          @keydown="onkeydown"
         />
         <v-row justify="end">
           <v-btn text color="primary" @click="dialog = false">
@@ -52,7 +59,7 @@ import {
   History,
   Image
 } from "tiptap-vuetify";
-
+import FileSelector from "./FileSelector.vue";
 export default {
   components: { TiptapVuetify },
   data() {
@@ -60,9 +67,34 @@ export default {
       extensions: [
         History,
         Blockquote,
-        Link,
-        Underline,
-        Strike,
+        [
+          Link,
+          {
+            renderIn: "bubbleMenu"
+          }
+        ],
+        [
+          Underline,
+          {
+            renderIn: "bubbleMenu"
+          }
+        ],
+        [
+          Strike,
+          {
+            renderIn: "bubbleMenu"
+          }
+        ],
+        [
+          Bold,
+          {
+            renderIn: "bubbleMenu",
+            // extension's options
+            options: {
+              levels: [1, 2, 3]
+            }
+          }
+        ],
         Italic,
         ListItem,
         BulletList,
@@ -75,12 +107,18 @@ export default {
             }
           }
         ],
-        Bold,
         Code,
         HorizontalRule,
         Paragraph,
         HardBreak,
-        Image
+        [
+          Image,
+          {
+            options: {
+              imageSources: [{ component: FileSelector, name: "File Selector" }]
+            }
+          }
+        ]
       ],
       // starting editor's content
       content: `
@@ -89,6 +127,11 @@ export default {
     `,
       dialog: false
     };
+  },
+  methods: {
+    onkeydown(event) {
+      console.log("event", event.key, this.content);
+    }
   }
 };
 </script>

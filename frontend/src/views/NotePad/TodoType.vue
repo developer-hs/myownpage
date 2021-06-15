@@ -8,31 +8,32 @@
       max-width="600"
     >
       <v-row align="center" justify="center">
-        <v-row class="pt-5 pl-5">
-          <v-col cols="auto">
-            <v-icon color="red" small>mdi-book-open-outline</v-icon>
-            <span
-              class="text-body-2 red--text"
-              :key="`tasks-${notePad.length}`"
-            >
-              {{ memoCount }}
-            </span>
-          </v-col>
-          <v-col cols="auto">
-            <v-icon color="success" small>mdi-checkbox-marked-outline</v-icon>
-            <span class="text-body-2 success--text">{{ DoneCount }} </span>
-          </v-col>
-          <v-col cols="auto">
-            <v-progress-circular
-              size="24"
-              :value="progress"
-              class="mr-2"
-            ></v-progress-circular>
-          </v-col>
-        </v-row>
+        <v-card flat>
+          <v-row class="pt-6 pl-5">
+            <v-col cols="auto">
+              <v-icon color="red" small>mdi-book-open-outline</v-icon>
+              <span
+                class="text-body-1 red--text"
+                :key="`tasks-${notePad.length}`"
+              >
+                {{ memoCount }}
+              </span>
+            </v-col>
+            <v-col cols="auto">
+              <v-icon color="success" small>mdi-checkbox-marked-outline</v-icon>
+              <span class="text-body-1 success--text">{{ DoneCount }} </span>
+            </v-col>
+            <v-col cols="auto">
+              <v-progress-circular
+                size="24"
+                :value="progress"
+                class="mr-2"
+              ></v-progress-circular>
+            </v-col>
+          </v-row>
+        </v-card>
         <v-col cols="12">
           <v-text-field
-            outlined
             class="pt-3"
             dense
             v-model="memoText"

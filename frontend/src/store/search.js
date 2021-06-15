@@ -4,7 +4,7 @@ import callApi from "../api/callApi";
 export default {
   namespaced: true,
   state: {
-    searchHistory: {},
+    searchHistory: {}
   },
   getters: {},
   mutations: {
@@ -17,17 +17,17 @@ export default {
           state.searchHistory.splice(i, 1);
         }
       }
-    },
+    }
   },
   actions: {
     getSearchHistory({ commit }) {
       callApi("get", "/search/history/", null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             commit("setSearchHistory", response.data);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -38,25 +38,39 @@ export default {
         { search_term: searchTerm },
         store.state.auth.token
       )
-        .then((response) => {
+        .then(response => {
           if (response.status === 201) {
             dispatch("getSearchHistory");
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
     removeSearchHistory({ commit }, pk) {
       callApi("delete", `/search/history/${pk}`, null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             commit("removeSearchHistory", pk);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
-  },
+    removeAllSerchHistory({ dispatch }) {
+      callApi(
+        "delete",
+        `/search/history/all/${store.state.auth.userInfo.id}`,
+        null,
+        store.state.auth.token
+      )
+        .then(response => {
+          if (response.status === 200) {
+            dispatch("getSearchHistory");
+          }
+        })
+        .catch(error => console.log(error));
+    }
+  }
 };

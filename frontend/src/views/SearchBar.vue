@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row align="center">
       <v-col cols="12">
         <v-text-field
           @keypress.enter="onSearch"
@@ -15,10 +15,16 @@
           </template>
         </v-text-field>
       </v-col>
-      <v-col cols="12">
+    </v-row>
+    <v-row align="center" v-if="searchHistory.length >= 1">
+      <v-col>
+        <v-btn class="history-all-remove" icon @click="removeAllSerchHistory">
+          <v-icon>mdi-magnify-remove-outline</v-icon>
+        </v-btn>
+
         <v-chip
           outlined
-          class="ml-2 mt-2"
+          class="ml-2"
           :ripple="false"
           :key="index"
           close
@@ -48,7 +54,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions("search", ["removeSearchHistory"]),
+    ...mapActions("search", ["removeSearchHistory", "removeAllSerchHistory"]),
     openSearch() {
       for (let i = 0; i < this.sites.length; i++) {
         if (this.sites[i].name === this.locked) {
@@ -67,3 +73,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.history-all-remove :hover {
+  color: red;
+}
+</style>

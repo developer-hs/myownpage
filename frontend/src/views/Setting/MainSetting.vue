@@ -55,7 +55,7 @@
               <v-btn color="red" text @click="logOut">LogOut</v-btn>
 
               <v-spacer></v-spacer>
-              <v-btn text @click="$router.push({name : 'home'})">Cancel</v-btn>
+              <v-btn text @click="$router.push({ name: 'home' })">Cancel</v-btn>
               <v-btn text color="primary">Submit</v-btn>
             </v-card-actions>
           </v-card>
@@ -73,13 +73,13 @@ export default {
   },
   computed: {
     ...mapState({
-      footer: (state) => state.settings.footer,
-      drawers: (state) => state.settings.drawers,
-      primaryDrawer: (state) => state.settings.primaryDrawer,
-    }),
+      footer: state => state.settings.footer,
+      drawers: state => state.settings.drawers,
+      primaryDrawer: state => state.settings.primaryDrawer
+    })
   },
   methods: {
-    ...mapActions("auth", ["logOut"]),
-  },
+    ...mapActions("auth", ["logOut"])
+  }
 };
 </script>

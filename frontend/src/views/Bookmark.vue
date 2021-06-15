@@ -16,16 +16,6 @@
           </v-btn>
         </div>
       </v-col>
-      <v-col cols="1">
-        <v-btn
-          icon
-          fab
-          depressed
-          small
-          @click="$router.push({ name: 'setting' })"
-          ><v-icon>mdi-cog</v-icon>
-        </v-btn>
-      </v-col>
     </v-row>
   </v-container>
 </template>

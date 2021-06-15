@@ -56,22 +56,22 @@ export default {
       settingsMenu: [
         { title: "Main Setting", icon: "mdi-view-dashboard" },
         { title: "Bookmark Setting", icon: "mdi-image" },
-        { title: "About", icon: "mdi-help-box" },
+        { title: "About", icon: "mdi-help-box" }
       ],
-      right: null,
+      right: null
     };
   },
   computed: {
     ...mapState({
-      footer: (state) => state.settings.footer,
-      primaryDrawer: (state) => state.settings.primaryDrawer,
-    }),
+      footer: state => state.settings.footer,
+      primaryDrawer: state => state.settings.primaryDrawer
+    })
   },
   methods: {
     toggleSetting(event) {
       const elementText = event.target.innerText;
       console.log(elementText.split(" "));
-    },
-  },
+    }
+  }
 };
 </script>
