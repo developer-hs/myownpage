@@ -63,7 +63,7 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <span v-html="selectedEvent.detail"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -84,7 +84,7 @@
         </v-menu>
       </v-sheet>
     </v-col>
-    <!-- 스케줄 등록 DIALOG -->
+    <!-- !스케줄 등록 DIALOG -->
     <v-dialog v-model="dialog" max-width="70rem">
       <v-card class="pa-6">
         <v-card-text>
@@ -176,6 +176,15 @@
             </v-col>
           </v-row>
         </v-card-text>
+        <v-textarea
+          class="pr-5 pl-6"
+          clearable
+          auto-grow
+          rows="1"
+          clear-icon="mdi-close-circle"
+          label="세부일정"
+          v-model="calendarObj.detail"
+        ></v-textarea>
         <v-row justify="end">
           <v-btn
             v-if="!updateMode"
@@ -218,7 +227,8 @@ export default {
         dates: [],
         time: "",
         color: "blue",
-        timed: true
+        timed: true,
+        detail: ""
       },
       updateMode: false,
       timeMenu: false,
@@ -278,6 +288,7 @@ export default {
   },
   methods: {
     createSchedule() {
+      console.log(this.calendarObj)
       if (this.calendarObj.dates.length == 1) {
         this.calendarObj.dates.push(this.calendarObj.dates[0]);
       }
@@ -315,6 +326,7 @@ export default {
       this.calendarObj.name = schedule.name;
       this.calendarObj.color = schedule.color;
       this.calendarObj.id = schedule.id;
+      this.calendarObj.detail = schedule.detail;
     },
     calendarObjInit() {
       this.calendarObj.name = "";

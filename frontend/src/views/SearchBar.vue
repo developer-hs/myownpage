@@ -8,7 +8,7 @@
           class="pt-9"
         >
           <template v-slot:label>
-            사이트 <strong>검색</strong>
+            {{locked}} <strong>검색</strong>
             <v-icon style="vertical-align: middle">
               mdi-file-find
             </v-icon>
