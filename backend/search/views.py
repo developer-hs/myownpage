@@ -41,8 +41,11 @@ class SearchHistoryAPIView(APIView):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
 
-@api_view(["POST"])
+@api_view(["delete"])
 @permission_classes((IsAuthenticated, IsSelf))
 @authentication_classes((JSONWebTokenAuthentication,))
-def history_all_delete(self, request):
-    print(request.user)
+def history_all_delete(request , pk):
+    if request.user.pk == pk:
+        SearchHistory.objects.filter(user = request.user).delete()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)

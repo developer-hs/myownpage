@@ -16,7 +16,7 @@ class OwnPagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         done_count = len(NotePads.objects.filter(user = self.request.user).filter(done=True))
-        print(done_count)
+        
         return Response({
             'links': {
                 'next': self.get_next_link(),
