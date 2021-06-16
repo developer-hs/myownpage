@@ -23,13 +23,7 @@
       transition="dialog-bottom-transition"
     >
       <v-card class="pa-6">
-        <tiptap-vuetify
-          v-model="content"
-          :extensions="extensions"
-          :toolbar-attributes="{ color: 'brown lighten-3' }"
-          placeholder="Write something …"
-          @keydown="onkeydown"
-        />
+        <tip-tap-component :content="body" @changeContent="setContent" />
         <v-row justify="end">
           <v-btn text color="primary" @click="dialog = false">
             Submit
@@ -40,97 +34,15 @@
   </v-card>
 </template>
 <script>
-import {
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  Code,
-  Paragraph,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Link,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History,
-  Image
-} from "tiptap-vuetify";
-import FileSelector from "./FileSelector.vue";
+import TipTapComponent from "../partial/TipTapComponent.vue";
 export default {
-  components: { TiptapVuetify },
+  components: { TipTapComponent },
   data() {
-    return {
-      extensions: [
-        History,
-        Blockquote,
-        [
-          Link,
-          {
-            renderIn: "bubbleMenu"
-          }
-        ],
-        [
-          Underline,
-          {
-            renderIn: "bubbleMenu"
-          }
-        ],
-        [
-          Strike,
-          {
-            renderIn: "bubbleMenu"
-          }
-        ],
-        [
-          Bold,
-          {
-            renderIn: "bubbleMenu",
-            // extension's options
-            options: {
-              levels: [1, 2, 3]
-            }
-          }
-        ],
-        Italic,
-        ListItem,
-        BulletList,
-        OrderedList,
-        [
-          Heading,
-          {
-            options: {
-              levels: [1, 2, 3]
-            }
-          }
-        ],
-        Code,
-        HorizontalRule,
-        Paragraph,
-        HardBreak,
-        [
-          Image,
-          {
-            options: {
-              imageSources: [{ component: FileSelector, name: "File Selector" }]
-            }
-          }
-        ]
-      ],
-      // starting editor's content
-      content: `
-      <h1>Yay Headlines!</h1>
-      <p>All these <strong>cool tags</strong> are working now.</p>
-    `,
-      dialog: false
-    };
+    return { dialog: false, content: "" };
   },
   methods: {
-    onkeydown(event) {
-      console.log("event", event.key, this.content);
+    setContent(content) {
+      this.content = content;
     }
   }
 };

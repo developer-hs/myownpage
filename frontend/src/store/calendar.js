@@ -50,7 +50,7 @@ export default {
         })
         .catch(error => console.log(error));
     },
-    updateSchedule({ state, dispatch }, schedule) {
+    updateSchedule({ dispatch }, schedule) {
       callApi(
         "put",
         `/schedule/${schedule.id}/`,
@@ -60,7 +60,7 @@ export default {
         .then(response => {
           if (response.status === 200) {
             dispatch("getSchedule");
-            console.log(state.schedule);
+            window.location.reload();
           }
         })
         .catch(error => console.log(error));

@@ -58,7 +58,7 @@ export default {
     removeMemo({ dispatch }, pk) {
       callApi("delete", `/notepad/memo/${pk}/`, null, store.state.auth.token)
         .then(response => {
-          if (response.status === 200) {
+          if (response.status === 204) {
             dispatch("getNotepad");
           }
         })

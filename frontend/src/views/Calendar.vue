@@ -90,6 +90,7 @@
         <v-card-text>
           <v-row>
             <v-col cols="12" sm="6">
+              <!-- 일정 등록 form -->
               <v-text-field
                 v-model="calendarObj.name"
                 label="일정"
@@ -98,6 +99,7 @@
             </v-col>
           </v-row>
           <v-row>
+            <!-- 날짜 지정 form -->
             <v-col cols="12" sm="6">
               <v-menu
                 ref="menu"
@@ -113,7 +115,7 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
                     v-model="dateRangeText"
-                    label="Date Range"
+                    label="날짜"
                     prepend-icon="mdi-calendar-month-outline"
                     readonly
                     v-bind="attrs"
@@ -128,6 +130,7 @@
               </v-menu>
             </v-col>
             <v-col cols="12" sm="6">
+              <!-- 시간 설정 form -->
               <v-menu
                 ref="menu"
                 v-model="timeMenu"
@@ -143,7 +146,7 @@
                   <v-text-field
                     :disabled="!timed"
                     v-model="calendarObj.time"
-                    label="Picker in menu"
+                    label="시간"
                     prepend-icon="mdi-clock-time-four-outline"
                     readonly
                     v-bind="attrs"
@@ -160,33 +163,35 @@
             </v-col>
           </v-row>
           <v-row>
+            <!-- 시간설정여부 확인 form -->
             <v-col>
               <v-checkbox
                 v-model="calendarObj.timed"
                 :label="'시간설정'"
               ></v-checkbox>
             </v-col>
+            <!-- 색상 form -->
             <v-col>
               <v-select
                 :items="colors"
+                item-text="name"
+                item-value="color"
                 v-model="calendarObj.color"
-                label="Colors"
+                label="색깔"
                 prepend-icon="mdi-palette"
               ></v-select>
             </v-col>
           </v-row>
         </v-card-text>
-        <v-textarea
-          class="pr-5 pl-6"
-          clearable
-          auto-grow
-          rows="1"
-          clear-icon="mdi-close-circle"
-          label="세부일정"
-          v-model="calendarObj.detail"
-        ></v-textarea>
+        <!-- !상세일정 -->
+        <tip-tap-component
+          :body="calendarObj.detail"
+          @changeContent="setContent"
+          class="pl-6 pr-5"
+        />
         <v-row justify="end">
           <v-btn
+            class="mt-6"
             v-if="!updateMode"
             text
             color="primary"
@@ -217,8 +222,10 @@
 import { mapState } from "vuex";
 import { DateConversion } from "./mixins/DateConversion";
 import { findObjectIndex } from "../api/objectMethod";
+import TipTapComponent from "./partial/TipTapComponent.vue";
 export default {
   mixins: [DateConversion],
+  components: { TipTapComponent },
   data() {
     return {
       // calendar schedule form data
@@ -227,44 +234,30 @@ export default {
         dates: [],
         time: "",
         color: "blue",
-        timed: true,
+        timed: false,
         detail: ""
       },
       updateMode: false,
       timeMenu: false,
       dateMenu: false,
-
-      newDate: "",
       dialog: false,
+
+      detailFor: 1,
+      newDate: "",
       focus: "",
       type: "month",
-      typeToLabel: {
-        month: "Month",
-        week: "Week",
-        day: "Day",
-        "4day": "4 Days"
-      },
+
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
       colors: [
-        "blue",
-        "indigo",
-        "deep-purple",
-        "cyan",
-        "green",
-        "orange",
-        "grey darken-1"
-      ],
-      names: [
-        "Meeting",
-        "Holiday",
-        "PTO",
-        "Travel",
-        "Event",
-        "Birthday",
-        "Conference",
-        "Party"
+        { name: "파랑", color: "blue" },
+        { name: "남색", color: "indigo" },
+        { name: "하늘", color: "cyan" },
+        { name: "초록", color: "green" },
+        { name: "보라", color: "deep-purple" },
+        { name: "주황", color: "orange" },
+        { name: "회색", color: "grey darken-1" }
       ]
     };
   },
@@ -286,9 +279,20 @@ export default {
   mounted() {
     this.$refs.calendar.checkChange();
   },
+  watch: {
+    dialog(val) {
+      if (val === true) {
+        this.$store.state.tiptap.content = this.calendarObj.detail;
+      } else {
+        this.$store.commit("tiptap/initContent");
+      }
+    }
+  },
   methods: {
+    setContent(body) {
+      this.calendarObj.detail = body;
+    },
     createSchedule() {
-      console.log(this.calendarObj)
       if (this.calendarObj.dates.length == 1) {
         this.calendarObj.dates.push(this.calendarObj.dates[0]);
       }
@@ -334,6 +338,8 @@ export default {
       this.calendarObj.time = "";
       this.calendarObj.color = "blue";
       this.calendarObj.timed = true;
+      this.calendarObj.detail = "";
+      this.detailFor = 1;
     },
     // 날짜 클릭시 호출
     viewDay({ date }) {
@@ -355,6 +361,7 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
+
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;

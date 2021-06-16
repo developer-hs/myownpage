@@ -9,9 +9,10 @@ import bookmark from "./bookmark";
 import search from "./search";
 import settings from "./settings";
 import calendar from "./calendar";
+import tiptap from "./tiptap";
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { auth, notepads, bookmark, search, settings, calendar },
+  modules: { auth, notepads, bookmark, search, settings, calendar, tiptap }
 });
