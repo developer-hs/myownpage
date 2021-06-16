@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view,  permission_classes, authentication_classes
 from search.serializers import SearchHistorySerializer
-from rest_framework.views import APIView
+from rest_framework import status, generics, mixins
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticated
 from rest_framework.response import Response
@@ -9,14 +9,14 @@ from .models import SearchHistory
 from users.permission import IsSelf
 
 
-class SearchHistoryAPIView(APIView):
+class SearchHistoryAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.DestroyModelMixin):
+    queryset = SearchHistory.objects.all()
+    serializer_class = SearchHistorySerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
 
-    def get(self, request):
-        search_history = request.user.search_history
-        serializer = SearchHistorySerializer(search_history, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     def post(self, request):
         historys = request.user.search_history.all()
@@ -44,8 +44,8 @@ class SearchHistoryAPIView(APIView):
 @api_view(["delete"])
 @permission_classes((IsAuthenticated, IsSelf))
 @authentication_classes((JSONWebTokenAuthentication,))
-def history_all_delete(request , pk):
+def history_all_delete(request, pk):
     if request.user.pk == pk:
-        SearchHistory.objects.filter(user = request.user).delete()
+        SearchHistory.objects.filter(user=request.user).delete()
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)

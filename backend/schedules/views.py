@@ -1,37 +1,36 @@
-from decimal import ConversionSyntax
-from django.db import connections
-from django.db.models.query import FlatValuesListIterable
-from rest_framework import status
+from rest_framework import status, generics, mixins
 from rest_framework.response import Response
 from schedules.serializers import ScheduleSerializer
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import Schedule
-from datetime import datetime, time
+from datetime import datetime
 
 
-class ScheduleAPIView(APIView):
+class ScheduleAPIView(generics.GenericAPIView, mixins.ListModelMixin):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
 
     def schedule_obj_init(self):
-        name = self.request.data.get("name")
-        color = self.request.data.get("color")
-        timed = self.request.data.get("timed")
-        dates = self.request.data.get("dates")
-        time = self.request.data.get("time")
-        detail = self.request.data.get("detail")
-        schedule_obj = {"name": name, "color": color,
-                        "timed": timed, "detail": detail}
-        self.date_conversion(time, dates, schedule_obj)
+        date_obj = self.date_obj_init()
+        schedule_obj = dict(self.request.data, **date_obj)
         return schedule_obj
 
-    def date_conversion(self, time: str, dates: list, schedule_obj: dict):
+    def date_obj_init(self):
+        dates = self.request.data.get("dates")
+        time = self.request.data.get("time")
+        timed = self.request.data.get("timed")
+        schedule_obj = {}
+        self.date_conversion(time, dates, timed, schedule_obj)
+        return schedule_obj
+
+    def date_conversion(self, time: str, dates: list, timed: bool, schedule_obj: dict):
         first_check = True
 
         hours, minute = 0, 0
-        if schedule_obj["timed"]:
+        if timed:
             hours, minute = time.split(":")
         for date in dates:
             year, month, day = date.split("-")
@@ -46,21 +45,12 @@ class ScheduleAPIView(APIView):
                     year, month, day, 0, 0)
         return schedule_obj
 
-    def get(self, request):
-        user = request.user
-        schedule = Schedule.objects.filter(user=user)
-        if schedule is None:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        elif schedule is not None:
-            serializer = ScheduleSerializer(schedule, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     def post(self, request):
         schedule_obj = self.schedule_obj_init()
         serializer = ScheduleSerializer(data=schedule_obj)
-        print(serializer)
         if serializer.is_valid():
             new_schedule = serializer.save(user=request.user)
             new_schedule_serializer = ScheduleSerializer(new_schedule).data
