@@ -15,8 +15,10 @@ class SearchHistoryAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixin
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get(self, request,):
+        search_history = SearchHistory.objects.filter(user=request.user)
+        serializer = SearchHistorySerializer(search_history , many=True).data
+        return Response(serializer , status=status.HTTP_200_OK)
 
     def post(self, request):
         historys = request.user.search_history.all()

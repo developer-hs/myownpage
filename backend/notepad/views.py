@@ -36,7 +36,7 @@ class NotepadsAPIView(generics.GenericAPIView, mixins.DestroyModelMixin, mixins.
 
     def get(self, request):
         paginator = OwnPagination()
-        notepads = NotePads.objects.all()
+        notepads = NotePads.objects.filter(user = request.user)
         result = paginator.paginate_queryset(notepads, request)
         serializer = NotePadSerializer(result, many=True, context={
                                        "request": request}).data

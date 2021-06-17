@@ -14,7 +14,7 @@ class AllSites(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JSONWebTokenAuthentication]
 
-    def get(self, request):
+    def get(self, reuqest):
         sites = InputSite.objects.all()
         serializer = InputSiteSerializer(sites, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

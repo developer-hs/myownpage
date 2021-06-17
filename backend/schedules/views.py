@@ -1,4 +1,4 @@
-from rest_framework import status, generics, mixins
+from rest_framework import serializers, status, generics, mixins
 from rest_framework.response import Response
 from schedules.serializers import ScheduleSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -45,8 +45,11 @@ class ScheduleAPIView(generics.GenericAPIView, mixins.ListModelMixin):
                     year, month, day, 0, 0)
         return schedule_obj
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get(self, request):
+        schedule = Schedule.objects.filter(user=request.user)
+        serializer = ScheduleSerializer(schedule , many=True).data
+        return Response(serializer , status=status.HTTP_200_OK)
+
 
     def post(self, request):
         schedule_obj = self.schedule_obj_init()
