@@ -23,12 +23,18 @@
       transition="dialog-bottom-transition"
     >
       <v-card class="pa-6">
-        <tip-tap-component :content="body" @changeContent="setContent" />
-        <v-row justify="end">
-          <v-btn text color="primary" @click="dialog = false">
-            Submit
-          </v-btn>
-        </v-row>
+        <tip-tap-component
+          :EditorContent="content"
+          @changeContent="setContent"
+        />
+        <v-container>
+          <v-row justify="end">
+            <v-btn text @click="dialog = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="dialog = false">
+              Submit
+            </v-btn>
+          </v-row>
+        </v-container>
       </v-card>
     </v-dialog>
   </v-card>

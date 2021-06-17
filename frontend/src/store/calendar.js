@@ -51,6 +51,7 @@ export default {
         .catch(error => console.log(error));
     },
     updateSchedule({ dispatch }, schedule) {
+      console.log(schedule);
       callApi(
         "put",
         `/schedule/${schedule.id}/`,

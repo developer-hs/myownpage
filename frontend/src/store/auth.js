@@ -7,7 +7,7 @@ export default {
     // data
     token: localStorage.getItem(AccessToken),
     isLoginError: false,
-    userInfo: {},
+    userInfo: {}
   },
   getters: {
     // computed
@@ -26,21 +26,21 @@ export default {
     },
     logOut() {
       localStorage.removeItem(AccessToken);
-    },
+    }
   },
   actions: {
     logIn({ commit }, loginObj) {
       callApi("post", "/token/", {
         username: loginObj.username,
-        password: loginObj.password,
+        password: loginObj.password
       })
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             commit("setToken", response.data.token);
             window.location.reload();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           if (error.response.status == 401) {
             commit("loginError");
           }
@@ -52,8 +52,8 @@ export default {
     },
     tokenVerify({ state, commit }) {
       callApi("post", "/token/verify/", { token: state.token }, null)
-        .then((response) => console.log(response))
-        .catch((error) => {
+        .then(response => console.log(response))
+        .catch(error => {
           console.log(error.response.status);
           commit("logOut");
         });
@@ -61,14 +61,14 @@ export default {
     getUserInfo({ state, commit, dispatch }) {
       dispatch("tokenVerify");
       callApi("post", "/users/user_info", null, state.token)
-        .then((response) => {
+        .then(response => {
           if (response.status === 200) {
             commit("setUserInfo", response.data);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
-    },
-  },
+    }
+  }
 };

@@ -172,26 +172,45 @@
             </v-col>
             <!-- 색상 form -->
             <v-col>
-              <v-select
-                :items="colors"
-                item-text="name"
-                item-value="color"
-                v-model="calendarObj.color"
-                label="색깔"
+              <v-text-field
                 prepend-icon="mdi-palette"
-              ></v-select>
+                v-model="calendarObj.color"
+                hide-details
+                class="ma-0 pa-0"
+              >
+                <template v-slot:append>
+                  <v-menu
+                    v-model="menu"
+                    top
+                    nudge-bottom="105"
+                    nudge-left="16"
+                    :close-on-content-click="false"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <div :style="swatchStyle" v-on="on" />
+                    </template>
+                    <v-card flat>
+                      <v-card-text class="pa-0">
+                        <v-color-picker v-model="calendarObj.color" flat />
+                      </v-card-text>
+                    </v-card>
+                  </v-menu>
+                </template>
+              </v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
         <!-- !상세일정 -->
         <tip-tap-component
-          :body="calendarObj.detail"
+          :EditorContent="EditorContent"
           @changeContent="setContent"
           class="pl-6 pr-5"
         />
         <v-row justify="end">
+          <v-btn text @click="dialog = false">
+            Cancel
+          </v-btn>
           <v-btn
-            class="mt-6"
             v-if="!updateMode"
             text
             color="primary"
@@ -223,6 +242,7 @@ import { mapState } from "vuex";
 import { DateConversion } from "./mixins/DateConversion";
 import { findObjectIndex } from "../api/objectMethod";
 import TipTapComponent from "./partial/TipTapComponent.vue";
+
 export default {
   mixins: [DateConversion],
   components: { TipTapComponent },
@@ -233,7 +253,7 @@ export default {
         name: "",
         dates: [],
         time: "",
-        color: "blue",
+        color: "#BCAAA4",
         timed: false,
         detail: ""
       },
@@ -250,15 +270,8 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      colors: [
-        { name: "파랑", color: "blue" },
-        { name: "남색", color: "indigo" },
-        { name: "하늘", color: "cyan" },
-        { name: "초록", color: "green" },
-        { name: "보라", color: "deep-purple" },
-        { name: "주황", color: "orange" },
-        { name: "회색", color: "grey darken-1" }
-      ]
+      menu: false,
+      EditorContent: ""
     };
   },
 
@@ -274,6 +287,19 @@ export default {
     },
     nowDate() {
       return this.$refs.calendar.title;
+    },
+    // color picker
+    swatchStyle() {
+      const color = this.calendarObj.color;
+      const menu = this.menu;
+      return {
+        backgroundColor: color,
+        cursor: "pointer",
+        height: "30px",
+        width: "30px",
+        borderRadius: menu ? "50%" : "4px",
+        transition: "border-radius 200ms ease-in-out"
+      };
     }
   },
   mounted() {
@@ -281,16 +307,15 @@ export default {
   },
   watch: {
     dialog(val) {
-      if (val === true) {
-        this.$store.state.tiptap.content = this.calendarObj.detail;
-      } else {
-        this.$store.commit("tiptap/initContent");
+      if (val === false) {
+        this.EditorContent = "";
       }
     }
   },
   methods: {
-    setContent(body) {
-      this.calendarObj.detail = body;
+    setContent(content) {
+      // tiptap 에서 전달받은 content 를 update / create form 에 옮김
+      this.calendarObj.detail = content;
     },
     createSchedule() {
       if (this.calendarObj.dates.length == 1) {
@@ -330,13 +355,14 @@ export default {
       this.calendarObj.name = schedule.name;
       this.calendarObj.color = schedule.color;
       this.calendarObj.id = schedule.id;
-      this.calendarObj.detail = schedule.detail;
+      // EditorContent : tiptap 정의된 룰에 따라 update 하기위해 props 값 설정
+      this.EditorContent = schedule.detail;
     },
     calendarObjInit() {
       this.calendarObj.name = "";
       this.calendarObj.dates = [];
       this.calendarObj.time = "";
-      this.calendarObj.color = "blue";
+      this.calendarObj.color = "#BCAAA4";
       this.calendarObj.timed = true;
       this.calendarObj.detail = "";
       this.detailFor = 1;

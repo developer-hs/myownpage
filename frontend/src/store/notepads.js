@@ -67,6 +67,7 @@ export default {
         });
     },
     updateMemo({ dispatch }, obj) {
+      console.log(obj);
       callApi(
         "put",
         `/notepad/memo/${obj.updateNote.id}/`,
