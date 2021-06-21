@@ -21,6 +21,6 @@ export const DateConversion = {
       if (String(minute).length === 1) {
         return `0${minute}`;
       } else return minute;
-    },
-  },
+    }
+  }
 };
