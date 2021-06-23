@@ -9,7 +9,7 @@ from rest_framework import serializers, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from .serializers import UserInfoSerializer, UserSerializer
+from .serializers import UserSerializer
 from .permission import IsSelf
 from .models import User
 from rest_framework.parsers import JSONParser
@@ -32,5 +32,5 @@ def signup(request):
 @authentication_classes((JSONWebTokenAuthentication,))
 def user_info(request):
     user = request.user
-    serializer = UserInfoSerializer(user)
+    serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)

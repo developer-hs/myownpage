@@ -11,7 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email',
-                  "password", "first_name", "last_name"]
+                  "password", "first_name", "last_name", "residence"]
         read_only_fields = ("id",)
         # extra_kwargs = {'url': {'view_name': 'authentication:user-detail'}}
 
@@ -26,11 +26,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         BookmarkSites.objects.create(user=user, locked="NAVER")
         user.bookmark.sites.add(InputSite.objects.get(name="NAVER"))
         return user
-
-
-class UserInfoSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ["username", "first_name", "last_name", "id", ]
-        read_only_field = '__all__'
