@@ -4,6 +4,7 @@ import Login from "@/components/auth/Login";
 import Auth from "@/components/auth/Auth";
 import store from "./store";
 import Setting from "@/components/Setting";
+import Test from "@/components/Test";
 const rejectAuthUser = (to, from, next) => {
   if (store.state.auth.token) {
     next({ name: "home" });
@@ -22,10 +23,9 @@ const onlyAuthUser = (to, from, next) => {
     store.dispatch("search/getSearchHistory");
     store.dispatch("settings/getSites");
     store.dispatch("calendar/getSchedule");
-
     setTimeout(() => {
       next();
-    }, 500);
+    }, 100);
   }
 };
 Vue.use(VueRouter);
@@ -45,23 +45,24 @@ const router = new VueRouter({
           path: "login",
           component: Login,
           name: "login",
-          beforeEnter: rejectAuthUser,
+          beforeEnter: rejectAuthUser
         },
         {
           path: "sign-up",
           component: SignUp,
           name: "signup",
-          beforeEnter: rejectAuthUser,
-        },
-      ],
+          beforeEnter: rejectAuthUser
+        }
+      ]
     },
     {
       path: "/setting",
       component: Setting,
       name: "setting",
-      beforeEnter: onlyAuthUser,
+      beforeEnter: onlyAuthUser
     },
-  ],
+    { path: "/test_page", component: Test, name: "test_page" }
+  ]
 });
 
 export default router;

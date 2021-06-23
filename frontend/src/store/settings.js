@@ -3,20 +3,14 @@ import store from "../store";
 export default {
   namespaced: true,
   state: {
-    footer: {
-      inset: false,
-    },
-    drawers: ["Default (no property)", "Permanent", "Temporary"],
-    primaryDrawer: {
-      model: null,
-      type: "default (no property)",
-      clipped: true,
-      floating: false,
-      mini: false,
-    },
-    sites: {},
+    dialog: false,
+    sites: {}
   },
-  getters: {},
+  getters: {
+    settingDialog(state) {
+      return state.dialog;
+    }
+  },
   mutations: {
     setSites(state, allSite) {
       for (let i = 0; i < allSite.length; i++) {
@@ -27,19 +21,23 @@ export default {
         state.sites[userSites[i].name] = true;
       }
     },
+    dialogToggle(state, bool) {
+      state.dialog = bool;
+      console.log(state.dialog);
+    }
   },
   actions: {
     getSites({ commit }) {
       callApi("get", "/bookmark/sites/", null, store.state.auth.token)
-        .then((response) => {
+        .then(response => {
           commit("setSites", response.data);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
     bookmarkSetting({ state }) {
       callApi("put", "/bookmark/", state.sites, store.state.auth.token);
-    },
-  },
+    }
+  }
 };

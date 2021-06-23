@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container id="search-bar">
     <v-row align="center">
       <v-col cols="12">
         <v-text-field
@@ -8,7 +8,7 @@
           class="pt-9"
         >
           <template v-slot:label>
-            {{locked}} <strong>검색</strong>
+            {{ locked }} <strong>검색</strong>
             <v-icon style="vertical-align: middle">
               mdi-file-find
             </v-icon>
@@ -16,9 +16,9 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row align="center" v-if="searchHistory.length >= 1">
+    <v-row class="pb-4" align="center" v-if="searchHistory.length >= 1">
       <v-col>
-        <v-btn class="history-all-remove" icon @click="removeAllSerchHistory">
+        <v-btn id="history-all-remove" icon @click="removeAllSerchHistory">
           <v-icon>mdi-magnify-remove-outline</v-icon>
         </v-btn>
 
@@ -40,6 +40,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import gsap from "gsap";
 export default {
   data() {
     return {
@@ -70,11 +71,22 @@ export default {
       this.searchTerm = event.target.innerText;
       this.openSearch();
     }
+  },
+  mounted() {
+    const tl = gsap.timeline();
+    tl.to("#search-bar", {
+      duration: 1,
+      opacity: 1,
+      delay: 0.5
+    });
   }
 };
 </script>
 <style scoped>
-.history-all-remove :hover {
+#history-all-remove :hover {
   color: red;
+}
+#search-bar {
+  opacity: 0;
 }
 </style>

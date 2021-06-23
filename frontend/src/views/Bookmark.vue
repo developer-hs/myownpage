@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="11">
-        <div class="bookmark-bar text-xs-center">
+        <div id="bookmark-bar" class="text-xs-center">
           <v-btn
             depressed
             text
@@ -21,6 +21,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import gsap from "gsap";
 export default {
   data() {
     return {};
@@ -40,7 +41,7 @@ export default {
       }, 50);
     },
     paintBookmark(preSiteName) {
-      const bookmarBar = document.querySelector(".bookmark-bar");
+      const bookmarBar = document.querySelector("#bookmark-bar");
       const el_Bookmark = bookmarBar.childNodes;
       const locked = this.bookmark.locked;
       for (let i = 0; i < el_Bookmark.length; i++) {
@@ -55,10 +56,19 @@ export default {
 
   mounted() {
     this.paintBookmark();
+    const tl = gsap.timeline();
+    tl.to("#bookmark-bar", {
+      duration: 1,
+      opacity: 1,
+      delay: 0.5
+    });
   }
 };
 </script>
 <style scoped>
+#bookmark-bar {
+  opacity: 0;
+}
 .daum {
   color: #3498db;
 }

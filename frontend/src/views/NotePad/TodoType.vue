@@ -7,10 +7,10 @@
       class="pa-3"
       max-width="600"
     >
-      <v-row align="center" justify="center">
-        <v-card flat>
-          <v-row class="pt-6 pl-5">
-            <v-col cols="auto">
+      <v-system-bar absolute window color="light-green lighten-3">
+        <v-row class="pa-2">
+          <v-col cols="auto">
+            <div class="d-inline-flex">
               <v-icon color="red" small>mdi-book-open-outline</v-icon>
               <span
                 class="text-body-1 red--text"
@@ -18,23 +18,26 @@
               >
                 {{ memoCount }}
               </span>
-            </v-col>
-            <v-col cols="auto">
+            </div>
+          </v-col>
+          <v-col cols="auto">
+            <div class="d-inline-flex">
               <v-icon color="success" small>mdi-checkbox-marked-outline</v-icon>
               <span class="text-body-1 success--text">{{ DoneCount }} </span>
-            </v-col>
-            <v-col cols="auto">
-              <v-progress-circular
-                size="24"
-                :value="progress"
-                class="mr-2"
-              ></v-progress-circular>
-            </v-col>
-          </v-row>
-        </v-card>
+            </div>
+          </v-col>
+        </v-row>
+        <v-spacer></v-spacer>
+        <v-progress-circular
+          size="24"
+          :value="progress"
+          class="mr-2"
+        ></v-progress-circular>
+      </v-system-bar>
+      <v-row align="center" justify="center">
         <v-col cols="12">
           <v-text-field
-            class="pt-3"
+            class="pt-12"
             dense
             v-model="memoText"
             label="할 일을 등록해 주세요"

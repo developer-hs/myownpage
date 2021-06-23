@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
     "core-js": "^3.6.5",
+    "gsap": "^3.7.0",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
     "tiptap-vuetify": "^2.24.0",
