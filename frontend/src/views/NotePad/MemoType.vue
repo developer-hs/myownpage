@@ -1,15 +1,14 @@
 <template>
-  <v-card rounded="lg" elevation="1" height="600" class="pa-3" max-width="600">
+  <div>
     <v-btn @click="dialog = true" color="pink" fab dark small absolute top left>
       <v-icon>mdi-plus</v-icon>
     </v-btn>
     <v-row>
-      <v-col cols="6" :key="i" v-for="i in 3">
+      <v-col cols="4" :key="i" v-for="i in 6">
         <v-card height="230px"
           ><v-img
             lazy-src="https://picsum.photos/id/11/10/6"
             height="230"
-            max-width="248.25"
             src="https://picsum.photos/id/11/500/300"
           >
           </v-img
@@ -37,7 +36,7 @@
         </v-container>
       </v-card>
     </v-dialog>
-  </v-card>
+  </div>
 </template>
 <script>
 import TipTapComponent from "../partial/TipTapComponent.vue";

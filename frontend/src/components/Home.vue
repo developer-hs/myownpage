@@ -10,14 +10,19 @@
       ><v-icon>mdi-cog</v-icon>
     </v-btn>
     <div id="search-container">
-      <rain-drop />
-      <v-col cols="12">
-        <bookmark />
-      </v-col>
-      <search-bar />
+      <v-container>
+        <v-col cols="12">
+          <bookmark />
+        </v-col>
+        <v-row>
+          <v-col cols="12">
+            <search-bar />
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
-    <v-container style="height:46rem">
-      <v-row>
+    <v-container id="content-container">
+      <v-row class="pr-6 pl-6 pb-6">
         <v-col cols="12">
           <v-card elevation="1">
             <v-row class="pl-3">
@@ -36,13 +41,14 @@
   </v-app>
 </template>
 <script>
+import gsap from "gsap";
 import Bookmark from "../views/Bookmark";
 import Notepad from "./Notepad.vue";
 import SearchBar from "../views/SearchBar";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import Calendar from "../views/Calendar";
 import Setting from "../views/Setting/Setting.vue";
-import RainDrop from "../views/partial/WeatherEffect/RainDrop.vue";
+
 export default {
   data() {
     return {};
@@ -53,7 +59,6 @@ export default {
     ...mapGetters("settings", ["settingDialog"])
   },
   components: {
-    RainDrop,
     Setting,
     Bookmark,
     Notepad,
@@ -65,14 +70,20 @@ export default {
       console.log("위도 : " + position.coords.latitude);
       console.log("경도 : " + position.coords.longitude);
     });
+  },
+  mounted() {
+    const tl = gsap.timeline();
+    tl.to("#content-container", {
+      opacity: 1,
+      duration: 1,
+      delay: 0.5
+    });
   }
 };
 </script>
+
 <style scoped>
-#search-container {
-  background-color: gray;
-  left: 0;
-  right: 0;
-  top: 0;
+#content-container {
+  opacity: 0;
 }
 </style>

@@ -16,7 +16,7 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row class="pb-4" align="center" v-if="searchHistory.length >= 1">
+    <v-row class="pb-8" align="center" v-if="searchHistory.length >= 1">
       <v-col>
         <v-btn id="history-all-remove" icon @click="removeAllSerchHistory">
           <v-icon>mdi-magnify-remove-outline</v-icon>

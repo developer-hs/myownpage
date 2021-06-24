@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="11">
+    <v-row align="center">
+      <v-col cols="7">
         <div id="bookmark-bar" class="text-xs-center">
           <v-btn
             depressed
@@ -16,20 +16,44 @@
           </v-btn>
         </div>
       </v-col>
+      <v-col cols="5">
+        <v-crad>
+          <rain v-if="weather === 'Mist' || weather === 'Rain'" />
+          <sun v-else-if="weather === ''" />
+          <cloud v-else-if="weather === 'Clouds'" />
+          <v-row justify="center pt-3 pl-2">
+            <span>{{ temp }}°C</span>
+          </v-row>
+        </v-crad>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
+import Rain from "./Weather/Rain.vue";
+import Cloud from "./Weather/Cloud.vue";
+import Sun from "./Weather/Sun.vue";
 import { mapActions, mapState } from "vuex";
 import gsap from "gsap";
 export default {
+  components: {
+    Rain,
+    Sun,
+    Cloud
+  },
   data() {
     return {};
   },
   computed: {
     ...mapState({
       bookmark: state => state.bookmark.bookmark
-    })
+    }),
+    weather() {
+      return this.$store.state.weather.weatherCondition.weather[0].main;
+    },
+    temp() {
+      return this.$store.state.weather.weatherCondition.main.temp;
+    }
   },
   methods: {
     ...mapActions("bookmark", ["siteLocked"]),
@@ -55,6 +79,9 @@ export default {
   },
 
   mounted() {
+    console.log("awdjlkajdklawjdkla");
+    console.log(this.weather);
+    console.log("awdjlkajdklawjdkla");
     this.paintBookmark();
     const tl = gsap.timeline();
     tl.to("#bookmark-bar", {

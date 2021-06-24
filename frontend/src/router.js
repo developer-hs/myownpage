@@ -25,7 +25,7 @@ const onlyAuthUser = (to, from, next) => {
     store.dispatch("calendar/getSchedule");
     setTimeout(() => {
       next();
-    }, 100);
+    }, 500);
   }
 };
 Vue.use(VueRouter);

@@ -64,7 +64,7 @@ export default {
 
 @media only screen and (min-width: 1100px) {
   .svg {
-    width: 10%;
+    width: 15%;
   }
 }
 </style>

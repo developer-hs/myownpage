@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-1">
+  <v-container id="notepad_container" class="mt-1">
     <v-row justify="end">
       <v-col cols="4">
         <v-select
@@ -12,8 +12,10 @@
         ></v-select>
       </v-col>
     </v-row>
-    <todo-type v-if="type == 'Todo'" />
-    <memo-type v-if="type == 'Memo'" />
+    <v-card rounded="lg" elevation="1" height="600" class="pa-3">
+      <todo-type v-if="type == 'Todo'" />
+      <memo-type v-if="type == 'Memo'" />
+    </v-card>
   </v-container>
 </template>
 <script>
