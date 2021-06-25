@@ -1,5 +1,5 @@
 <template>
-  <v-app v-if="this.$store.state.auth.token">
+  <v-app id="main-container" v-if="this.$store.state.auth.token">
     <v-btn
       style="position:absolute"
       icon
@@ -21,7 +21,7 @@
         </v-row>
       </v-container>
     </div>
-    <v-container id="content-container">
+    <v-container>
       <v-row class="pr-6 pl-6 pb-6">
         <v-col cols="12">
           <v-card elevation="1">
@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
     const tl = gsap.timeline();
-    tl.to("#content-container", {
+    tl.to("#main-container", {
       opacity: 1,
       duration: 1,
       delay: 0.5
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style scoped>
-#content-container {
+#main-container {
   opacity: 0;
 }
 </style>

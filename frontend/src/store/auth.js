@@ -64,7 +64,7 @@ export default {
         .then(response => {
           if (response.status === 200) {
             commit("setUserInfo", response.data);
-            store.dispatch("weather/getWeather");
+            store.dispatch("weather/getResWeather");
           }
         })
         .catch(error => {

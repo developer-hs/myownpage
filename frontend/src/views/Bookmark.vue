@@ -19,10 +19,10 @@
       <v-col cols="5">
         <v-crad>
           <rain v-if="weather === 'Mist' || weather === 'Rain'" />
-          <sun v-else-if="weather === ''" />
+          <sun v-else-if="weather === 'Clear'" />
           <cloud v-else-if="weather === 'Clouds'" />
-          <v-row justify="center pt-3 pl-2">
-            <span>{{ temp }}°C</span>
+          <v-row justify="center pt-4 pl-1">
+            <span class="text-caption">{{ temp }}°C</span>
           </v-row>
         </v-crad>
       </v-col>
@@ -30,11 +30,11 @@
   </v-container>
 </template>
 <script>
-import Rain from "./Weather/Rain.vue";
-import Cloud from "./Weather/Cloud.vue";
+import Rain from "./Weather/RainDrop.vue";
+import Cloud from "./Weather/Clouds.vue";
 import Sun from "./Weather/Sun.vue";
 import { mapActions, mapState } from "vuex";
-import gsap from "gsap";
+
 export default {
   components: {
     Rain,
@@ -83,19 +83,10 @@ export default {
     console.log(this.weather);
     console.log("awdjlkajdklawjdkla");
     this.paintBookmark();
-    const tl = gsap.timeline();
-    tl.to("#bookmark-bar", {
-      duration: 1,
-      opacity: 1,
-      delay: 0.5
-    });
   }
 };
 </script>
 <style scoped>
-#bookmark-bar {
-  opacity: 0;
-}
 .daum {
   color: #3498db;
 }

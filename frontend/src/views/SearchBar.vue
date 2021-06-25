@@ -40,7 +40,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import gsap from "gsap";
+
 export default {
   data() {
     return {
@@ -71,22 +71,11 @@ export default {
       this.searchTerm = event.target.innerText;
       this.openSearch();
     }
-  },
-  mounted() {
-    const tl = gsap.timeline();
-    tl.to("#search-bar", {
-      duration: 1,
-      opacity: 1,
-      delay: 0.5
-    });
   }
 };
 </script>
 <style scoped>
 #history-all-remove :hover {
   color: red;
-}
-#search-bar {
-  opacity: 0;
 }
 </style>

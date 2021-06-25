@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-system-bar absolute window color="grey darken-1">
-      <v-row class="pa-2">
+      <v-row class="pa-2  ">
         <v-col cols="auto">
           <div class="d-inline-flex">
             <v-icon color="red" small>mdi-book-open-outline</v-icon>
