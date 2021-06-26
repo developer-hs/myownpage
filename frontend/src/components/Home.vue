@@ -66,10 +66,18 @@ export default {
     Calendar
   },
   created() {
-    navigator.geolocation.getCurrentPosition(position => {
-      console.log("위도 : " + position.coords.latitude);
-      console.log("경도 : " + position.coords.longitude);
-    });
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        this.$store.dispatch("weather/getGeoWeather", { lat, lon });
+        console.log("위도 : " + position.coords.latitude);
+        console.log("경도 : " + position.coords.longitude);
+      });
+      // geolocation API를 브라우저가 지원한다면 실행할 코드
+    } else {
+      // geolocation API를 브라우저가 지원하지 않는다면 실행할  코드
+    }
   },
   mounted() {
     const tl = gsap.timeline();

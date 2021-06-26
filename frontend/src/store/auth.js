@@ -1,6 +1,6 @@
 import { AccessToken } from "../variable";
 import callApi from "../api/callApi";
-import store from "../store";
+
 export default {
   namespaced: true,
   state: {
@@ -64,7 +64,6 @@ export default {
         .then(response => {
           if (response.status === 200) {
             commit("setUserInfo", response.data);
-            store.dispatch("weather/getResWeather");
           }
         })
         .catch(error => {

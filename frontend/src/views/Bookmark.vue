@@ -16,43 +16,26 @@
           </v-btn>
         </div>
       </v-col>
-      <v-col cols="5">
-        <v-crad>
-          <rain v-if="weather === 'Mist' || weather === 'Rain'" />
-          <sun v-else-if="weather === 'Clear'" />
-          <cloud v-else-if="weather === 'Clouds'" />
-          <v-row justify="center pt-4 pl-1">
-            <span class="text-caption">{{ temp }}°C</span>
-          </v-row>
-        </v-crad>
+      <v-col class="d-flex justify-end" cols="5">
+        <weather style="position:absolute" v-if="WeatherReady == true" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-import Rain from "./Weather/RainDrop.vue";
-import Cloud from "./Weather/Clouds.vue";
-import Sun from "./Weather/Sun.vue";
 import { mapActions, mapState } from "vuex";
-
+import Weather from "./Weather.vue";
 export default {
-  components: {
-    Rain,
-    Sun,
-    Cloud
-  },
   data() {
     return {};
   },
+  components: { Weather },
   computed: {
     ...mapState({
       bookmark: state => state.bookmark.bookmark
     }),
-    weather() {
-      return this.$store.state.weather.weatherCondition.weather[0].main;
-    },
-    temp() {
-      return this.$store.state.weather.weatherCondition.main.temp;
+    WeatherReady() {
+      return this.$store.state.weather.responseCompletion;
     }
   },
   methods: {
@@ -79,9 +62,6 @@ export default {
   },
 
   mounted() {
-    console.log("awdjlkajdklawjdkla");
-    console.log(this.weather);
-    console.log("awdjlkajdklawjdkla");
     this.paintBookmark();
   }
 };

@@ -49,14 +49,9 @@ export default {
 </script>
 <style scoped>
 .svg {
-  width: 100%;
+  width: 15%;
   margin: 0 auto;
   display: block;
   margin-top: 4%;
-}
-@media only screen and (min-width: 1100px) {
-  .svg {
-    width: 15%;
-  }
 }
 </style>

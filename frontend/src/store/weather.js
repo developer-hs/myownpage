@@ -3,12 +3,14 @@ import axios from "axios";
 export default {
   namespaced: true,
   state: {
-    weatherCondition: { weather: [{ main: "Sun" }] }
+    weatherCondition: { weather: [{ main: "Sun" }] },
+    responseCompletion: false
   },
   getters: {},
   mutations: {
     setWeather(state, weather) {
       state.weatherCondition = weather;
+      state.responseCompletion = true;
       console.log(weather);
     }
   },
@@ -27,21 +29,20 @@ export default {
           console.log(error);
         });
     },
-    getGeoWeather({ commit }) {
-      const [lat, lon] = navigator.geolocation.getCurrentPosition(position => {
-        return [position.coords.latitude, position.coords.longitude];
-      });
-      console.log("awjdliawjdlkawjdkla");
-      console.log(lat, lon);
+    getGeoWeather({ commit, dispatch }, geo) {
+      console.log("GeoGeoGeoGeoGeoGeoGeoGeoGeoGeoGeoGeoGeoGeo");
+      console.log(geo);
       axios["get"](
-        `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=eba302c9974e0f1906f4c12247fa990b`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${geo.lat}&lon=${geo.lon}&units=metric&appid=eba302c9974e0f1906f4c12247fa990b`
       )
         .then(response => {
           if (response.status === 200) {
+            console.log(response.data);
             commit("setWeather", response.data);
           }
         })
         .catch(error => {
+          dispatch("getResWeather");
           console.log(error);
         });
     }
