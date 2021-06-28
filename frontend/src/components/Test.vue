@@ -5,41 +5,53 @@
     viewBox="0 0 211.000000 129.000000"
     preserveAspectRatio="xMidYMid meet"
   >
-    <g
-      transform="translate(0.000000,129.000000) scale(0.100000,-0.100000)"
-      fill="#000000"
-      stroke="none"
-    >
-      <path
-        d="M966 1279 c-107 -15 -229 -87 -275 -163 -13 -21 -41 -44 -74 -60
--127 -62 -198 -167 -198 -291 0 -276 353 -426 606 -256 l31 20 44 -29 c189
--125 465 -59 560 134 53 107 40 224 -37 324 -32 42 -134 109 -179 118 -24 4
--40 16 -55 40 -72 116 -254 187 -423 163z"
+    <g id="대지_1" data-name="대지 1">
+      <image
+        id="타원_5"
+        data-name="타원 5"
+        x="41"
+        width="129"
+        height="86"
+        xlink:href="data:img/png;base64,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"
       />
-      <path
-        class="rainDropOne"
-        d="M560 400 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13
-0 -20 -7 -20 -20z"
+      <use
+        class="snowDropOne"
+        id="snowflake"
+        x="52"
+        y="105"
+        xlink:href="#image"
       />
-      <path
-        class="rainDropTwo"
-        d="M1520 400 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20
--13 0 -20 -7 -20 -20z"
+      <use
+        class="snowDropTwo"
+        id="snowflake-2"
+        data-name="snowflake"
+        x="148"
+        y="105"
+        xlink:href="#image"
       />
-      <path
-        class="rainDropThree"
-        d="M1040 330 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20
--13 0 -20 -7 -20 -20z"
+      <use
+        class="snowDropThree"
+        id="snowflake-3"
+        data-name="snowflake"
+        x="100"
+        y="103"
+        xlink:href="#image"
       />
-      <path
-        class="rainDropFour"
-        d="M780 290 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13
-0 -20 -7 -20 -20z"
+      <use
+        class="snowDropFour"
+        id="snowflake-4"
+        data-name="snowflake"
+        x="73"
+        y="110"
+        xlink:href="#image"
       />
-      <path
-        class="rainDropFive"
-        d="M1300 290 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20
--13 0 -20 -7 -20 -20z"
+      <use
+        class="snowDropFive"
+        id="snowflake-5"
+        data-name="snowflake"
+        x="125"
+        y="110"
+        xlink:href="#image"
       />
     </g>
   </svg>
@@ -51,38 +63,38 @@ export default {
   mounted() {
     let tl = gsap.timeline();
 
-    tl.from(".rainDropOne", {
+    tl.from(".snowDropOne", {
       repeat: -1,
-      y: -100,
+      y: -40,
       ease: "none",
-      duration: 0.6
+      duration: 1.2
     });
 
-    tl.from(".rainDropTwo", {
+    tl.from(".snowDropFive", {
+      repeat: -1,
+      y: -70,
+      ease: "none",
+      duration: 1.2
+    });
+    tl.from(".snowDropTwo", {
       repeat: -1,
       y: -100,
-      ease: "none",
-      duration: 0.7
-    });
-
-    tl.from(".rainDropThree", {
-      repeat: -1,
-      y: -60,
       ease: "none",
       duration: 1
     });
 
-    tl.from(".rainDropFour", {
+    tl.from(".snowDropThree", {
       repeat: -1,
-      y: -55,
+      y: -60,
       ease: "none",
-      duration: 0.5
+      duration: 1.3
     });
-    tl.from(".rainDropFive", {
+
+    tl.from(".snowDropFour", {
       repeat: -1,
-      y: -55,
+      y: -60,
       ease: "none",
-      duration: 0.5
+      duration: 1.5
     });
   }
 };
@@ -94,5 +106,8 @@ export default {
   margin: 0 auto;
   display: block;
   margin-top: 4%;
+}
+.snow {
+  fill: #bdc3c7;
 }
 </style>

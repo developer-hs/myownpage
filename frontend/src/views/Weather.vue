@@ -3,8 +3,8 @@
     <span class="text-subtitle-2">{{ residence }}</span>
     <rain v-if="weather === 'Mist' || weather === 'Rain'" />
     <sun v-else-if="weather === 'Clear'" />
-    <cloud v-else-if="weather === 'Clouds'" />
-    <test v-else-if="weather === ''" />
+    <cloud v-else-if="weather === ''" />
+    <test v-else-if="weather === 'Clouds'" />
     <span class="pt-2 text-caption">{{ temp }}°C</span>
   </v-card>
 </template>
