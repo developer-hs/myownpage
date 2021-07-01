@@ -54,11 +54,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.svg {
-  width: 15%;
-  margin: 0 auto;
-  display: block;
-  margin-top: 4%;
-}
-</style>
+<style scoped></style>

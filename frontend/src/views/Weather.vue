@@ -1,10 +1,22 @@
 <template>
   <v-card class="d-flex justify-center align-center flex-column" flat>
-    <span class="text-subtitle-2">{{ residence }}</span>
+    <svg width="80" height="20">
+      <text
+        text-anchor="middle"
+        alignment-baseline="middle"
+        transform="translate(40, 10)"
+        fill="#000000"
+        font-size="15"
+        font-family="'Leckerli One', cursive"
+        letter-spacing="1"
+      >
+        {{ residence }}
+      </text>
+    </svg>
     <rain v-if="weather === 'Mist' || weather === 'Rain'" />
     <sun v-else-if="weather === 'Clear'" />
-    <cloud v-else-if="weather === ''" />
-    <test v-else-if="weather === 'Clouds'" />
+    <cloud v-else-if="weather === 'Clouds'" />
+    <test v-else-if="weather === ''" />
     <span class="pt-2 text-caption">{{ temp }}°C</span>
   </v-card>
 </template>
