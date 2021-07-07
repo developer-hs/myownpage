@@ -56,7 +56,15 @@ export default {
   methods: {
     ...mapActions("auth", ["getUserInfo"]),
     ...mapMutations("settings", { settingsDialog: "dialogToggle" }),
-    ...mapGetters("settings", ["settingDialog"])
+    ...mapGetters("settings", ["settingDialog"]),
+    success(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      this.$store.dispatch("weather/getGeoWeather", { lat, lon });
+    },
+    error() {
+      this.$store.dispatch("weather/getResWeather");
+    }
   },
   components: {
     Setting,
@@ -66,17 +74,12 @@ export default {
     Calendar
   },
   created() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        this.$store.dispatch("weather/getGeoWeather", { lat, lon });
-        console.log("위도 : " + position.coords.latitude);
-        console.log("경도 : " + position.coords.longitude);
-      });
+    if (navigator.geolocation) {
+      console.log(navigator.geolocation);
+      navigator.geolocation.getCurrentPosition(this.success, this.error);
       // geolocation API를 브라우저가 지원한다면 실행할 코드
     } else {
-      // geolocation API를 브라우저가 지원하지 않는다면 실행할  코드
+      this.$store.dispatch("weather/getResWeather");
     }
   },
   mounted() {

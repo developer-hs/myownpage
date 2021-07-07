@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-system-bar absolute window color="grey darken-1">
+    <v-system-bar absolute window color="#ced6e0">
       <v-row class="pa-2  ">
         <v-col cols="auto">
           <div class="d-inline-flex">

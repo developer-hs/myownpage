@@ -341,14 +341,14 @@
           <v-divider></v-divider>
           <div class="pa-4 pt-7 texam">
             <v-form autocomplete="off">
-              <v-text-field
+              <v-textarea
                 label="link"
                 height="50"
                 v-model="linkUrl"
                 hide-details
                 class="mb-5 size14"
                 outlined
-              ></v-text-field>
+              ></v-textarea>
 
               <v-checkbox
                 v-model="linkNewTab"
@@ -573,7 +573,7 @@ export default {
 
 <style lang="scss">
 .ProseMirror {
-  height: 300px;
+  height: 700px;
   border: 1px solid #ccc;
   border-radius: 20px;
   outline: none;

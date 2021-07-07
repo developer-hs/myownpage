@@ -26,6 +26,7 @@ export default {
     },
     logOut() {
       localStorage.removeItem(AccessToken);
+      window.location.reload();
     }
   },
   actions: {
@@ -48,7 +49,6 @@ export default {
     },
     logOut({ commit }) {
       commit("logOut");
-      window.location.reload();
     },
     tokenVerify({ state, commit }) {
       callApi("post", "/token/verify/", { token: state.token }, null)

@@ -11,7 +11,6 @@ export default {
     setWeather(state, weather) {
       state.weatherCondition = weather;
       state.responseCompletion = true;
-      console.log(weather);
     }
   },
   actions: {

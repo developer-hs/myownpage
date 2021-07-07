@@ -1,18 +1,6 @@
 <template>
   <v-card class="d-flex justify-center align-center flex-column" flat>
-    <svg width="80" height="20">
-      <text
-        text-anchor="middle"
-        alignment-baseline="middle"
-        transform="translate(40, 10)"
-        fill="#000000"
-        font-size="15"
-        font-family="'Leckerli One', cursive"
-        letter-spacing="1"
-      >
-        {{ residence }}
-      </text>
-    </svg>
+    {{ residence }}
     <rain v-if="weather === 'Mist' || weather === 'Rain'" />
     <sun v-else-if="weather === 'Clear'" />
     <cloud v-else-if="weather === 'Clouds'" />
@@ -32,6 +20,18 @@ export default {
     Cloud,
     Test
   },
+  methods: {
+    success(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      this.$store.dispatch("weather/getGeoWeather", { lat, lon });
+      console.log("위도 : " + position.coords.latitude);
+      console.log("경도 : " + position.coords.longitude);
+    },
+    error() {
+      this.$store.dispatch("weather/getResWeather");
+    }
+  },
   computed: {
     weather() {
       return this.$store.state.weather.weatherCondition.weather[0].main;
@@ -41,6 +41,14 @@ export default {
     },
     residence() {
       return this.$store.state.weather.weatherCondition.name;
+    }
+  },
+  created() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.success, this.error);
+      // geolocation API를 브라우저가 지원한다면 실행할 코드
+    } else {
+      this.$store.dispatch("weather/getResWeather");
     }
   }
 };
